@@ -18,6 +18,6 @@ public class Location {
     private Date endDate ;
     private boolean isReturned;
     @ManyToOne
-    private Equipement equipement;
+    private Equipemente equipement;
 
 }
