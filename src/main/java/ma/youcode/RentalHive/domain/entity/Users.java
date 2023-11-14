@@ -1,10 +1,9 @@
-package ma.youcode.RentalHive.entity;
+package ma.youcode.RentalHive.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
-import ma.youcode.RentalHive.enums.UserRole;
+import ma.youcode.RentalHive.domain.enums.UserRole;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

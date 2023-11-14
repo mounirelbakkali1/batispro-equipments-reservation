@@ -1,4 +1,4 @@
-package ma.youcode.RentalHive.enums;
+package ma.youcode.RentalHive.domain.enums;
 
 public enum EquipementStatus {
     AVAILABLE,

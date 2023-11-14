@@ -1,5 +1,4 @@
-package ma.youcode.RentalHive.entity;
-
+package ma.youcode.RentalHive.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,14 +9,12 @@ import java.util.Date;
 
 @Data @AllArgsConstructor @NoArgsConstructor
 @Entity
-public class Location {
+public class DossierLocation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date startDate;
-    private Date endDate ;
-    private boolean isReturned;
+    private Date dateLocation ;
     @ManyToOne
-    private Equipement equipement;
+    private Client client ;
 
 }

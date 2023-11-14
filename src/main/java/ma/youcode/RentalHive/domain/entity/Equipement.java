@@ -1,10 +1,10 @@
-package ma.youcode.RentalHive.entity;
+package ma.youcode.RentalHive.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ma.youcode.RentalHive.enums.EquipementStatus;
-import ma.youcode.RentalHive.enums.EquipementType;
+import ma.youcode.RentalHive.domain.enums.EquipementStatus;
+import ma.youcode.RentalHive.domain.enums.EquipementType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
