@@ -1,4 +1,4 @@
-package ma.youcode.RentalHive.entity;
+package ma.youcode.RentalHive.domain.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -18,6 +18,6 @@ public class Location {
     private Date endDate ;
     private boolean isReturned;
     @ManyToOne
-    private Equipment equipement;
+    private Equipment equipment;
 
 }

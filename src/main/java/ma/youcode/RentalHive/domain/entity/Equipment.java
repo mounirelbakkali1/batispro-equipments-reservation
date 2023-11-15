@@ -1,10 +1,10 @@
-package ma.youcode.RentalHive.entity;
+package ma.youcode.RentalHive.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ma.youcode.RentalHive.enums.EquipementStatus;
-import ma.youcode.RentalHive.enums.EquipementType;
+import ma.youcode.RentalHive.domain.enums.EquipmentStatus;
+import ma.youcode.RentalHive.domain.enums.EquipmentType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,9 +20,9 @@ public class Equipment {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private EquipementType equipementType;
+    private EquipmentType equipmentType;
     private String model;
     private String description ;
-    private EquipementStatus equipementStatus;
+    private EquipmentStatus equipmentStatus;
 
 }

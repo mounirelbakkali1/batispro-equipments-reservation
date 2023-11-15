@@ -1,4 +1,4 @@
-package ma.youcode.RentalHive.entity;
+package ma.youcode.RentalHive.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

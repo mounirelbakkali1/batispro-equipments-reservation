@@ -1,8 +1,8 @@
 package ma.youcode.RentalHive.dto;
 
-import ma.youcode.RentalHive.entity.Equipment;
-import ma.youcode.RentalHive.enums.EquipementStatus;
-import ma.youcode.RentalHive.enums.EquipementType;
+import ma.youcode.RentalHive.domain.entity.Equipment;
+import ma.youcode.RentalHive.domain.enums.EquipmentStatus;
+import ma.youcode.RentalHive.domain.enums.EquipmentType;
 
 import javax.validation.constraints.NotNull;
 
@@ -12,11 +12,11 @@ public record EquipmentCreationRequestDTO(
         @NotNull
         String model,
         @NotNull
-        EquipementType equipementType,
+        EquipmentType equipmentType,
         @NotNull
         String description,
         @NotNull
-        EquipementStatus equipementStatus
+        EquipmentStatus equipmentStatus
 
 ) {
         public static Equipment equipmentFromEquipmentCreationRequestDTO (EquipmentCreationRequestDTO equipment){
@@ -24,10 +24,10 @@ public record EquipmentCreationRequestDTO(
 
                  null,
                  equipment.name,
-                 equipment.equipementType,
+                 equipment.equipmentType,
                  equipment.model,
                  equipment.description,
-                 equipment.equipementStatus
+                 equipment.equipmentStatus
 
          );
         }

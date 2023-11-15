@@ -1,25 +1,26 @@
 package ma.youcode.RentalHive.dto;
 
-import ma.youcode.RentalHive.entity.Equipment;
-import ma.youcode.RentalHive.enums.EquipementStatus;
-import ma.youcode.RentalHive.enums.EquipementType;
+import ma.youcode.RentalHive.domain.entity.Equipment;
+import ma.youcode.RentalHive.domain.enums.EquipmentStatus;
+import ma.youcode.RentalHive.domain.enums.EquipmentType;
+
 
 public record EquipmentResponseDTO(
         Long id,
         String name,
-        EquipementType equipementType,
+        EquipmentType equipmentType,
         String model,
         String description,
-        EquipementStatus equipementStatus
+        EquipmentStatus equipmentStatus
 ) {
     public static EquipmentResponseDTO fromEquipment (Equipment equipment){
         return new EquipmentResponseDTO(
                 equipment.getId(),
                 equipment.getName(),
-                equipment.getEquipementType(),
+                equipment.getEquipmentType(),
                 equipment.getModel(),
                 equipment.getDescription(),
-                equipment.getEquipementStatus()
+                equipment.getEquipmentStatus()
 
         );
     }

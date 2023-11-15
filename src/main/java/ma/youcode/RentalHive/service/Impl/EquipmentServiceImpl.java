@@ -2,9 +2,9 @@ package ma.youcode.RentalHive.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ma.youcode.RentalHive.domain.entity.Equipment;
 import ma.youcode.RentalHive.dto.EquipmentCreationRequestDTO;
 import ma.youcode.RentalHive.dto.EquipmentResponseDTO;
-import ma.youcode.RentalHive.entity.Equipment;
 import ma.youcode.RentalHive.repository.EquipmentRepository;
 import ma.youcode.RentalHive.service.IEquipmentService;
 import org.springframework.dao.DataAccessException;
