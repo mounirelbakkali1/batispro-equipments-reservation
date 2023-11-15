@@ -1,20 +1,22 @@
 package ma.youcode.RentalHive.domain.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor @AllArgsConstructor
-public class Location {
+@Data @AllArgsConstructor @NoArgsConstructor
+public class EquipmentAgency {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private Integer quantity;
-    private LocalDateTime start_date;
-    private LocalDateTime end_date;
-    private Boolean is_returned = false;
+    private Double location_price;
     @ManyToOne
+    @JoinColumn(name = "agency_id")
+    private Agency agency;
+    @ManyToOne
+    @JoinColumn(name = "equipment_unit_id")
     private EquipmentUnit equipmentUnit;
 }
