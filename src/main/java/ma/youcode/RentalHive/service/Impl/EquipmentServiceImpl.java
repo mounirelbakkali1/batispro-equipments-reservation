@@ -9,6 +9,10 @@ import ma.youcode.RentalHive.repository.EquipmentRepository;
 import ma.youcode.RentalHive.service.IEquipmentService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import ma.youcode.RentalHive.exception.*;
+
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,15 +23,42 @@ public class EquipmentServiceImpl implements IEquipmentService {
 
 
     @Override
-    public EquipmentResponseDTO createEquipment(EquipmentCreationRequestDTO equipmentDTO) {
+    public EquipmentResponseDTO createEquipment(EquipmentCreationRequestDTO equipment) {
         try {
-          Equipment equipment =  equipmentRepository.save(EquipmentCreationRequestDTO.equipmentFromEquipmentCreationRequestDTO(equipmentDTO));
+          Equipment equipment1 =  equipmentRepository.save(EquipmentCreationRequestDTO.equipmentFromEquipmentCreationRequestDTO(equipment));
           log.info("Equipment created succefully");
-          return EquipmentResponseDTO.fromEquipment(equipment);
+          return EquipmentResponseDTO.fromEquipment(equipment1);
         }catch (DataAccessException e){
             log.error("Error occured during saving equipment", e);
             throw new RuntimeException("Failed to save equipment" , e);
         }
 
+    }
+
+    @Override
+    public EquipmentResponseDTO getEquipmentById(Long id) {
+       try {
+           return equipmentRepository.findById(id)
+                   .map(EquipmentResponseDTO::fromEquipment)
+                   .orElseThrow(()->new EquipmentNotFoundException(String.format("Equipment with id %d not found", id)));
+       } catch(DataAccessException e){
+           log.error(String.format("Error occurred during fetching equipment with id %d", id), e);
+           throw new RuntimeException("Failed to fetch product", e);
+
+        }
+    }
+
+    @Override
+    public List<EquipmentResponseDTO> getAllEquipments(){
+        try {
+            return equipmentRepository.findAll().stream()
+                    .filter(Objects::nonNull)
+                    .map(EquipmentResponseDTO::fromEquipment)
+                    .toList();
+
+        }catch (DataAccessException e){
+            log.error("Error occurred during fetching all equipments", e);
+            throw new RuntimeException("Failed to fetch equipments", e);
+        }
     }
 }
