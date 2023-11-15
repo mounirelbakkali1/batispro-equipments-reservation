@@ -13,13 +13,11 @@ import javax.persistence.Id;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-public class Client {
+public class Client extends Users{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
     private String address;
     private String phone;
     private String cin;
-
 }

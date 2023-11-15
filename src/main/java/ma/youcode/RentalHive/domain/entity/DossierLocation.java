@@ -16,5 +16,4 @@ public class DossierLocation {
     private Date dateLocation ;
     @ManyToOne
     private Client client ;
-
 }
