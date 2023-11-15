@@ -1,5 +1,5 @@
 package ma.youcode.RentalHive.domain.enums;
 
-public enum EquipementType {
+public enum EquipmentType {
     EXCAVATOR,BETONNIERE, ECHAFAUDAGES
 }
