@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-public class Equipement {
+public class Equipment {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
