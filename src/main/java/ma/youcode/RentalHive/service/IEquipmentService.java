@@ -10,4 +10,5 @@ public interface IEquipmentService {
     EquipmentResponseDTO createEquipment (EquipmentCreationRequestDTO equipment);
     EquipmentResponseDTO getEquipmentById(Long id);
     List<EquipmentResponseDTO> getAllEquipments();
+    void deleteEquipmentById(Long id) ;
 }

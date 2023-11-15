@@ -23,7 +23,8 @@ public class EquipmentController {
 
 
     @GetMapping({"/",""})
-    public ResponseEntity<List<EquipmentResponseDTO>> getAllEquipment(){
+    public ResponseEntity<List<EquipmentResponseDTO>>
+    getAllEquipment(){
         log.info("Request received to retrieve all equipments");
         return ResponseEntity.ok(equipmentService.getAllEquipments());
     }

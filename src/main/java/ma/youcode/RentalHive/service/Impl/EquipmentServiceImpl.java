@@ -61,4 +61,20 @@ public class EquipmentServiceImpl implements IEquipmentService {
             throw new RuntimeException("Failed to fetch equipments", e);
         }
     }
+
+    @Override
+    public void deleteEquipmentById(Long id) {
+        try{
+            Objects.requireNonNull(id, "Equipment ID must not be null");
+            if(equipmentRepository.findById(id).isPresent()){
+                equipmentRepository.deleteById(id);
+                log.info(String.format("Equipment with id %d deleted successfully", id));
+            }else{
+                throw new EquipmentNotFoundException(String.format("Product with id %d not found", id));
+            }
+        }catch(DataAccessException e){
+            log.error(String.format("Error occurred during equipment deleting for id %d", id), e);
+            throw new RuntimeException("Failed to delete equipment", e);
+        }
+    }
 }
