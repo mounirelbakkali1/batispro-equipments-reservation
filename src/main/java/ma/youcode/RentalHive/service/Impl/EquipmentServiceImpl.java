@@ -44,7 +44,6 @@ public class EquipmentServiceImpl implements IEquipmentService {
        } catch(DataAccessException e){
            log.error(String.format("Error occurred during fetching equipment with id %d", id), e);
            throw new RuntimeException("Failed to fetch product", e);
-
         }
     }
 
