@@ -1,8 +1,8 @@
-package ma.youcode.RentalHive.dto;
+package ma.youcode.RentalHive.dto.equipmentDTO;
 
 import ma.youcode.RentalHive.domain.entity.Equipment;
-import ma.youcode.RentalHive.domain.enums.EquipmentStatus;
-import ma.youcode.RentalHive.domain.enums.EquipmentType;
+import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
+import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentType;
 
 
 public record EquipmentResponseDTO(

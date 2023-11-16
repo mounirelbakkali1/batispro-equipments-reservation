@@ -1,15 +1,14 @@
 package ma.youcode.RentalHive.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import ma.youcode.RentalHive.domain.enums.EquipmentStatus;
-import ma.youcode.RentalHive.domain.enums.EquipmentType;
+import lombok.*;
+import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
+import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentType;
 
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor @NoArgsConstructor
 @Entity
 public class Equipment {
@@ -23,4 +22,29 @@ public class Equipment {
     private String description ;
     @Enumerated( EnumType.STRING)
     private EquipmentStatus equipmentStatus;
+
+
+    public Equipment(Long id, String name, EquipmentType equipmentType, String model, String description, EquipmentStatus equipmentStatus) {
+        this.id = id;
+        this.name = name;
+        this.equipmentType = equipmentType;
+        this.model = model;
+        this.description = description;
+        this.equipmentStatus = equipmentStatus;
+    }
+
+    @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL)
+    List<EquipmentUnit> equipmentUnits;
+
+    @Override
+    public String toString() {
+        return "Equipment{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", equipmentType=" + equipmentType +
+                ", model='" + model + '\'' +
+                ", description='" + description + '\'' +
+                ", equipmentStatus=" + equipmentStatus +
+                '}';
+    }
 }
