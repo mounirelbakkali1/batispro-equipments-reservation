@@ -39,10 +39,10 @@ public class EquipmentServiceImpl implements IEquipmentService {
     }
 
     @Override
-    public EquipmentResponseDTO updateEquipment(EquipmentUpdateRequestDTO updateRequestDTO){
+    public EquipmentResponseDTO updateEquipment(Long id, EquipmentUpdateRequestDTO updateRequestDTO){
         try {
-            Equipment equipment = equipmentRepository.save(EquipmentUpdateRequestDTO.equipmentFromEquipmentUpdateRequestDTO(updateRequestDTO));
-            log.info("Equipment Saved Successfully");
+            Equipment equipment = equipmentRepository.save(EquipmentUpdateRequestDTO.equipmentFromEquipmentUpdateRequestDTO(id, updateRequestDTO));
+            log.info("Equipment Updated Successfully");
             return EquipmentResponseDTO.fromEquipment(equipment);
         }catch (DataAccessException e){
             log.error("Error occurred during updating equipment", e);
