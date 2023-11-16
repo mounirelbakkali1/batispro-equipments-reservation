@@ -11,9 +11,8 @@ import java.util.List;
 public interface IEquipmentService {
 
     EquipmentResponseDTO createEquipment(EquipmentCreationRequestDTO equipment);
-    EquipmentResponseDTO updateEquipment(EquipmentUpdateRequestDTO equipmentUpdateRequestDTO);
+    EquipmentResponseDTO updateEquipment(Long id, EquipmentUpdateRequestDTO equipmentUpdateRequestDTO);
     EquipmentResponseDTO getEquipmentById(Long id);
-
     List<EquipmentResponseDTO> getAllEquipments();
     void deleteEquipmentById(Long id) ;
     List<EquipmentResponseDTO> searchEquipment(String name, EquipmentType equipmentType, EquipmentStatus equipmentStatus);
