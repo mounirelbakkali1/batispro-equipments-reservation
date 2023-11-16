@@ -1,12 +1,10 @@
 package ma.youcode.RentalHive.domain.entity;
 
 import lombok.*;
-import ma.youcode.RentalHive.domain.enums.LocationFolderStatus;
-import ma.youcode.RentalHive.domain.enums.LocationStatus;
+import ma.youcode.RentalHive.domain.enums.Location.LocationFolderStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Setter

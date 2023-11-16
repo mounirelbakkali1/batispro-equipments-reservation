@@ -1,13 +1,11 @@
 package ma.youcode.RentalHive.domain.entity;
 
 import lombok.*;
-import ma.youcode.RentalHive.domain.enums.EquipmentStatus;
-import ma.youcode.RentalHive.domain.enums.EquipmentType;
+import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
+import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentType;
 
 import javax.persistence.*;
 import java.util.List;
-import javax.persistence.*;
-import java.util.UUID;
 
 @Getter
 @Setter

@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ma.youcode.RentalHive.domain.enums.EquipmentStatus;
+import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
 
 import javax.persistence.*;
 
