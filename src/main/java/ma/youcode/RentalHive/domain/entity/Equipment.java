@@ -23,5 +23,4 @@ public class Equipment {
     private String description ;
     @Enumerated( EnumType.STRING)
     private EquipmentStatus equipmentStatus;
-
 }

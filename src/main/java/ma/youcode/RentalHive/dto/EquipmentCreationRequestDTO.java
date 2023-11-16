@@ -21,7 +21,6 @@ public record EquipmentCreationRequestDTO(
 ) {
         public static Equipment equipmentFromEquipmentCreationRequestDTO (EquipmentCreationRequestDTO equipment){
          return new Equipment(
-
                  null,
                  equipment.name,
                  equipment.equipmentType,
