@@ -1,8 +1,6 @@
 package ma.youcode.RentalHive.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ma.youcode.RentalHive.domain.enums.LocationStatus;
 import ma.youcode.RentalHive.domain.enums.PaymentStatus;
 
@@ -13,6 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor @AllArgsConstructor
 @Builder
 @Table(name = "reservations")
+@Getter
+@Setter
 public class Location {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -27,4 +27,7 @@ public class Location {
     private PaymentStatus paymentStatus;
     @ManyToOne
     private EquipmentUnit equipmentUnit;
+
+    @ManyToOne
+    private DossierLocation dossierLocation;
 }
