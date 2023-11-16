@@ -1,8 +1,8 @@
 package ma.youcode.RentalHive.service;
 
-import ma.youcode.RentalHive.dto.LocationCreationRequestDto;
-import ma.youcode.RentalHive.dto.LocationDetailsDto;
-import ma.youcode.RentalHive.dto.LocationFolderDetailsDto;
+import ma.youcode.RentalHive.dto.locationDTO.LocationCreationRequestDto;
+import ma.youcode.RentalHive.dto.locationDTO.LocationDetailsDto;
+import ma.youcode.RentalHive.dto.locationDTO.LocationFolderDetailsDto;
 
 import java.util.List;
 

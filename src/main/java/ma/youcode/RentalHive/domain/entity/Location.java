@@ -1,7 +1,7 @@
 package ma.youcode.RentalHive.domain.entity;
 
 import lombok.*;
-import ma.youcode.RentalHive.domain.enums.LocationStatus;
+import ma.youcode.RentalHive.domain.enums.Location.LocationStatus;
 import ma.youcode.RentalHive.domain.enums.PaymentStatus;
 
 import javax.persistence.*;

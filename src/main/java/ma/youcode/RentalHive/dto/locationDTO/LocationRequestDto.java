@@ -1,4 +1,4 @@
-package ma.youcode.RentalHive.dto;
+package ma.youcode.RentalHive.dto.locationDTO;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;

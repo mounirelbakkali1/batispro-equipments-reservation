@@ -1,8 +1,8 @@
 package ma.youcode.RentalHive.controller;
 
 import lombok.RequiredArgsConstructor;
-import ma.youcode.RentalHive.dto.LocationCreationRequestDto;
-import ma.youcode.RentalHive.dto.LocationFolderDetailsDto;
+import ma.youcode.RentalHive.dto.locationDTO.LocationCreationRequestDto;
+import ma.youcode.RentalHive.dto.locationDTO.LocationFolderDetailsDto;
 import ma.youcode.RentalHive.service.ILocationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

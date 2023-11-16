@@ -1,4 +1,4 @@
-package ma.youcode.RentalHive.dto;
+package ma.youcode.RentalHive.dto.clientDTO;
 
 import javax.validation.constraints.NotBlank;
 

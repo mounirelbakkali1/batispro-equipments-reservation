@@ -2,14 +2,14 @@ package ma.youcode.RentalHive.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import ma.youcode.RentalHive.domain.entity.*;
-import ma.youcode.RentalHive.domain.enums.EquipmentStatus;
-import ma.youcode.RentalHive.domain.enums.LocationFolderStatus;
-import ma.youcode.RentalHive.domain.enums.LocationStatus;
+import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
+import ma.youcode.RentalHive.domain.enums.Location.LocationFolderStatus;
+import ma.youcode.RentalHive.domain.enums.Location.LocationStatus;
 import ma.youcode.RentalHive.domain.enums.UserRole;
-import ma.youcode.RentalHive.dto.ClientDossierRequestDto;
-import ma.youcode.RentalHive.dto.LocationCreationRequestDto;
-import ma.youcode.RentalHive.dto.LocationDetailsDto;
-import ma.youcode.RentalHive.dto.LocationFolderDetailsDto;
+import ma.youcode.RentalHive.dto.clientDTO.ClientDossierRequestDto;
+import ma.youcode.RentalHive.dto.locationDTO.LocationCreationRequestDto;
+import ma.youcode.RentalHive.dto.locationDTO.LocationDetailsDto;
+import ma.youcode.RentalHive.dto.locationDTO.LocationFolderDetailsDto;
 import ma.youcode.RentalHive.repository.EquipmentRepository;
 import ma.youcode.RentalHive.repository.LocationFolderRepository;
 import ma.youcode.RentalHive.repository.LocationRepository;
@@ -46,7 +46,7 @@ public class LocationService implements ILocationService {
                             .orElseThrow(() -> new IllegalArgumentException("Equipment not found"));
                     List<EquipmentUnit> equipmentUnits = equipment.getEquipmentUnits();
                     long availableEquipmentUnits = equipmentUnits.stream()
-                            .filter(eu -> eu.getEquipmentStatus().equals(EquipmentStatus.AVAILABLE))
+                            .filter(eu -> eu.getEquipmentStatus().equals(EquipmentStatus.NEW))
                             .count();
 
                     if (availableEquipmentUnits < lr.quantity()) {
