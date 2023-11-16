@@ -11,7 +11,8 @@ import javax.persistence.*;
 public class EquipmentUnit {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long ref;
+    private String ref;
+    @Enumerated(EnumType.STRING)
     private EquipmentStatus equipmentStatus;
     private Integer quantity;
 }
