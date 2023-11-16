@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.youcode.RentalHive.dto.EquipmentCreationRequestDTO;
 import ma.youcode.RentalHive.dto.EquipmentResponseDTO;
+import ma.youcode.RentalHive.dto.EquipmentUpdateRequestDTO;
 import ma.youcode.RentalHive.service.IEquipmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,14 @@ public class EquipmentController {
         log.info("Request received to create a new equipment.");
         return ResponseEntity.status(HttpStatus.CREATED).body(equipmentService.createEquipment(requestDTO));
     }
+
+    @PutMapping("equipment/update")
+    public ResponseEntity updateEquipment(@Valid @RequestBody EquipmentUpdateRequestDTO equipmentUpdateRequestDTO){
+        log.info("Request received to update a new equipment.");
+        return ResponseEntity.status(HttpStatus.OK).body(equipmentService.updateEquipment(equipmentUpdateRequestDTO));
+    }
+
+
     @GetMapping("/{equipmentId}")
     public ResponseEntity<EquipmentResponseDTO> getEquipmentById(@PathVariable Long equipmentId){
         log.info("Request received to get equipment by ID: {}", equipmentId);

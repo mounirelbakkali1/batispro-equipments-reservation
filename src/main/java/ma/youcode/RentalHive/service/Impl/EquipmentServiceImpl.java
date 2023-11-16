@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import ma.youcode.RentalHive.domain.entity.Equipment;
 import ma.youcode.RentalHive.dto.EquipmentCreationRequestDTO;
 import ma.youcode.RentalHive.dto.EquipmentResponseDTO;
+import ma.youcode.RentalHive.dto.EquipmentUpdateRequestDTO;
 import ma.youcode.RentalHive.repository.EquipmentRepository;
 import ma.youcode.RentalHive.service.IEquipmentService;
 import org.springframework.dao.DataAccessException;
@@ -36,6 +37,18 @@ public class EquipmentServiceImpl implements IEquipmentService {
     }
 
     @Override
+    public EquipmentResponseDTO updateEquipment(EquipmentUpdateRequestDTO updateRequestDTO){
+        try {
+            Equipment equipment = equipmentRepository.save(EquipmentUpdateRequestDTO.equipmentFromEquipmentUpdateRequestDTO(updateRequestDTO));
+            log.info("Equipment Saved Successfully");
+            return EquipmentResponseDTO.fromEquipment(equipment);
+        }catch (DataAccessException e){
+            log.error("Error occurred during updating equipment", e);
+            throw new RuntimeException("Failed to update equipment");
+        }
+    }
+
+    @Override
     public EquipmentResponseDTO getEquipmentById(Long id) {
        try {
            return equipmentRepository.findById(id)
@@ -54,10 +67,10 @@ public class EquipmentServiceImpl implements IEquipmentService {
                     .filter(Objects::nonNull)
                     .map(EquipmentResponseDTO::fromEquipment)
                     .toList();
-
         }catch (DataAccessException e){
             log.error("Error occurred during fetching all equipments", e);
             throw new RuntimeException("Failed to fetch equipments", e);
         }
     }
+
 }

@@ -24,5 +24,4 @@ public class Equipment {
     private String model;
     private String description ;
     private EquipmentStatus equipmentStatus;
-
 }
