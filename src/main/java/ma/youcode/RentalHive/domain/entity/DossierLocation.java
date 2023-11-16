@@ -1,16 +1,18 @@
 package ma.youcode.RentalHive.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ma.youcode.RentalHive.domain.enums.LocationFolderStatus;
 import ma.youcode.RentalHive.domain.enums.LocationStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
-@Data @AllArgsConstructor @NoArgsConstructor
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor @NoArgsConstructor
 @Entity
 public class DossierLocation {
     @Id
@@ -23,6 +25,6 @@ public class DossierLocation {
     private Client client ;
     @Enumerated(EnumType.STRING)
     private LocationFolderStatus status ;
-    @ManyToOne
-    private Location location ;
+    @OneToMany(mappedBy = "dossierLocation", cascade = CascadeType.ALL)
+    private List<Location> location ;
 }
