@@ -43,11 +43,17 @@ public class EquipmentController {
         return ResponseEntity.ok(equipmentService.getEquipmentById(equipmentId));
     }
     @GetMapping("/search")
-    public ResponseEntity<List<EquipmentResponseDTO>> searchEquipment(@RequestParam String name, @RequestParam EquipmentType equipmentType, @RequestParam EquipmentStatus equipmentStatus
-    ) {
+    public ResponseEntity<List<EquipmentResponseDTO>> searchEquipment(@RequestParam String name, @RequestParam EquipmentType equipmentType, @RequestParam EquipmentStatus equipmentStatus) {
         log.info("Request received to search equipment. Name: {}, Type: {}, Status: {}", name, equipmentType, equipmentStatus);
         List<EquipmentResponseDTO> result = equipmentService.searchEquipment(name, equipmentType, equipmentStatus);
         return ResponseEntity.ok(result);
+    }
+    
+    @DeleteMapping("/{equipmentId}/delete")
+    public ResponseEntity<Void> deleteEquipment(@PathVariable Long equipmentId){
+        log.info("Request received to delete equipment with ID: {}.", equipmentId);
+        equipmentService.deleteEquipmentById(equipmentId);
+        return ResponseEntity.noContent().build();
     }
 
 }

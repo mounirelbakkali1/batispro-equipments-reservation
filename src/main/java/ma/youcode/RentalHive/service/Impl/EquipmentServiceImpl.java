@@ -12,7 +12,6 @@ import ma.youcode.RentalHive.service.IEquipmentService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import ma.youcode.RentalHive.exception.*;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
