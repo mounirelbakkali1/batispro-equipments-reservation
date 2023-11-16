@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import ma.youcode.RentalHive.domain.enums.EquipmentStatus;
 import ma.youcode.RentalHive.domain.enums.EquipmentType;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Data
@@ -20,8 +17,10 @@ public class Equipment {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Enumerated( EnumType.STRING)
     private EquipmentType equipmentType;
     private String model;
     private String description ;
+    @Enumerated( EnumType.STRING)
     private EquipmentStatus equipmentStatus;
 }

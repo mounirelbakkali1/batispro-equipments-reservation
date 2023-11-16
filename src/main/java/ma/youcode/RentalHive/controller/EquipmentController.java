@@ -3,6 +3,8 @@ package ma.youcode.RentalHive.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ma.youcode.RentalHive.domain.enums.EquipmentStatus;
+import ma.youcode.RentalHive.domain.enums.EquipmentType;
 import ma.youcode.RentalHive.dto.EquipmentCreationRequestDTO;
 import ma.youcode.RentalHive.dto.EquipmentResponseDTO;
 import ma.youcode.RentalHive.dto.EquipmentUpdateRequestDTO;
@@ -24,7 +26,8 @@ public class EquipmentController {
 
 
     @GetMapping({"/",""})
-    public ResponseEntity<List<EquipmentResponseDTO>> getAllEquipment(){
+    public ResponseEntity<List<EquipmentResponseDTO>>
+    getAllEquipment(){
         log.info("Request received to retrieve all equipments");
         return ResponseEntity.ok(equipmentService.getAllEquipments());
     }
@@ -48,4 +51,18 @@ public class EquipmentController {
         log.info("Request received to get equipment by ID: {}", equipmentId);
         return ResponseEntity.ok(equipmentService.getEquipmentById(equipmentId));
     }
+    @GetMapping("/search")
+    public ResponseEntity<List<EquipmentResponseDTO>> searchEquipment(@RequestParam String name, @RequestParam EquipmentType equipmentType, @RequestParam EquipmentStatus equipmentStatus) {
+        log.info("Request received to search equipment. Name: {}, Type: {}, Status: {}", name, equipmentType, equipmentStatus);
+        List<EquipmentResponseDTO> result = equipmentService.searchEquipment(name, equipmentType, equipmentStatus);
+        return ResponseEntity.ok(result);
+    }
+    
+    @DeleteMapping("/{equipmentId}/delete")
+    public ResponseEntity<Void> deleteEquipment(@PathVariable Long equipmentId){
+        log.info("Request received to delete equipment with ID: {}.", equipmentId);
+        equipmentService.deleteEquipmentById(equipmentId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

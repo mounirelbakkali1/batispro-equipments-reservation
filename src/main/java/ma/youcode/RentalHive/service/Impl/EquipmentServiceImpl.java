@@ -3,6 +3,8 @@ package ma.youcode.RentalHive.service.Impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.youcode.RentalHive.domain.entity.Equipment;
+import ma.youcode.RentalHive.domain.enums.EquipmentStatus;
+import ma.youcode.RentalHive.domain.enums.EquipmentType;
 import ma.youcode.RentalHive.dto.EquipmentCreationRequestDTO;
 import ma.youcode.RentalHive.dto.EquipmentResponseDTO;
 import ma.youcode.RentalHive.dto.EquipmentUpdateRequestDTO;
@@ -11,9 +13,9 @@ import ma.youcode.RentalHive.service.IEquipmentService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import ma.youcode.RentalHive.exception.*;
-
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -71,6 +73,41 @@ public class EquipmentServiceImpl implements IEquipmentService {
             log.error("Error occurred during fetching all equipments", e);
             throw new RuntimeException("Failed to fetch equipments", e);
         }
+    }
+
+
+    @Override
+    public void deleteEquipmentById(Long id) {
+        try{
+            Objects.requireNonNull(id, "Equipment ID must not be null");
+            if(equipmentRepository.findById(id).isPresent()){
+                equipmentRepository.deleteById(id);
+                log.info(String.format("Equipment with id %d deleted successfully", id));
+            }else{
+                throw new EquipmentNotFoundException(String.format("Product with id %d not found", id));
+            }
+        }catch(DataAccessException e){
+            log.error(String.format("Error occurred during equipment deleting for id %d", id), e);
+            throw new RuntimeException("Failed to delete equipment", e);
+        }
+    }
+
+    @Override
+    public List<EquipmentResponseDTO> searchEquipment(String name, EquipmentType equipmentType, EquipmentStatus equipmentStatus) {
+        try {
+            List<Equipment> equipmentList = equipmentRepository.findByNameAndEquipmentTypeAndEquipmentStatus(name, equipmentType, equipmentStatus);
+            if (equipmentList.isEmpty()) {
+                throw new EquipmentNotFoundException("No equipment found with the specified criteria");
+            }
+            return equipmentList.stream()
+                    .map(EquipmentResponseDTO::fromEquipment)
+                    .collect(Collectors.toList());
+        }catch (DataAccessException e){
+            log.error("Error occurred during searching an equipment", e);
+            throw new RuntimeException("Failed to search equipment", e);
+
+        }
+
     }
 
 }
