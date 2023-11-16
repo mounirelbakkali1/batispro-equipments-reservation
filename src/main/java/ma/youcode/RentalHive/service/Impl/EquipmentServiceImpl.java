@@ -83,6 +83,9 @@ public class EquipmentServiceImpl implements IEquipmentService {
     public List<EquipmentResponseDTO> searchEquipment(String name, EquipmentType equipmentType, EquipmentStatus equipmentStatus) {
         try {
             List<Equipment> equipmentList = equipmentRepository.findByNameAndEquipmentTypeAndEquipmentStatus(name, equipmentType, equipmentStatus);
+            if (equipmentList.isEmpty()) {
+                throw new EquipmentNotFoundException("No equipment found with the specified criteria");
+            }
             return equipmentList.stream()
                     .map(EquipmentResponseDTO::fromEquipment)
                     .collect(Collectors.toList());
