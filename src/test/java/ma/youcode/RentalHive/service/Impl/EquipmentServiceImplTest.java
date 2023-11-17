@@ -1,5 +1,6 @@
 package ma.youcode.RentalHive.service.Impl;
 
+import ma.youcode.RentalHive.exception.EquipmentNotFoundException;
 import ma.youcode.RentalHive.service.Impl.EquipmentServiceImpl;
 import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentCreationRequestDTO;
 import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentResponseDTO;
@@ -16,8 +17,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class EquipmentServiceImplTest {
@@ -38,5 +38,12 @@ public class EquipmentServiceImplTest {
         when(equipmentRepository.findById(1L)).thenReturn(Optional.of(new Equipment()));
         equipmentServiceImpl.deleteEquipmentById(1L);
         Mockito.verify(equipmentRepository, Mockito.times(1)).deleteById(1L);
+    }
+    @Test
+    public void test_deleteEquipment_notFound() {
+        when(equipmentRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(EquipmentNotFoundException.class, () -> {
+            equipmentServiceImpl.deleteEquipmentById(1L);
+        });
     }
 }
