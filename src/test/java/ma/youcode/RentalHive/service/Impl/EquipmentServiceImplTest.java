@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataAccessException;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,5 +107,52 @@ public class EquipmentServiceImplTest {
     public void test_getAllEquipments_exception() {
         when(equipmentRepository.findAll()).thenThrow(new RuntimeException("Error occurred"));
         assertThrows(RuntimeException.class, () -> equipmentServiceImpl.getAllEquipments());
+    }
+    @Test
+    public void test_searchEquipment_success() {
+
+        EquipmentType equipmentType = EquipmentType.EXCAVATOR;
+        EquipmentStatus equipmentStatus = EquipmentStatus.NEW;
+        List<Equipment> mockEquipmentList = Collections.singletonList(new Equipment());
+        Mockito.when(equipmentRepository.findByNameAndEquipmentTypeAndEquipmentStatus("Excavator", equipmentType, equipmentStatus))
+                .thenReturn(mockEquipmentList);
+        List<EquipmentResponseDTO> result = equipmentServiceImpl.searchEquipment("Excavator", equipmentType, equipmentStatus);
+        assertEquals(mockEquipmentList.size(), result.size());
+    }
+    @Test
+    public void test_searchEquipment_noResult() {
+        EquipmentType equipmentType = EquipmentType.EXCAVATOR;
+        EquipmentStatus equipmentStatus = EquipmentStatus.NEW;
+        Mockito.when(equipmentRepository.findByNameAndEquipmentTypeAndEquipmentStatus("Nonexistent", equipmentType, equipmentStatus))
+                .thenReturn(Collections.emptyList());
+        assertThrows(EquipmentNotFoundException.class, () ->
+                equipmentServiceImpl.searchEquipment("Nonexistent", equipmentType, equipmentStatus));
+    }
+    @Test
+    public void test_searchEquipment_emptyCriteria() {
+        String name = null;
+        EquipmentType equipmentType = null;
+        EquipmentStatus equipmentStatus = null;
+        assertThrows(EquipmentNotFoundException.class, () ->
+                equipmentServiceImpl.searchEquipment(name, equipmentType, equipmentStatus));
+    }
+
+    @Test
+    public void test_searchEquipment_multipleResults() {
+
+
+        EquipmentType equipmentType = EquipmentType.EXCAVATOR;
+        EquipmentStatus equipmentStatus = EquipmentStatus.NEW;
+        List<Equipment> mockEquipmentList = List.of(
+                new Equipment(),
+                new Equipment()
+        );
+
+        Mockito.when(equipmentRepository.findByNameAndEquipmentTypeAndEquipmentStatus("Excavator", equipmentType, equipmentStatus))
+                .thenReturn(mockEquipmentList);
+
+        List<EquipmentResponseDTO> result = equipmentServiceImpl.searchEquipment("Excavator", equipmentType, equipmentStatus);
+        assertEquals(mockEquipmentList.size(), result.size());
+
     }
 }
