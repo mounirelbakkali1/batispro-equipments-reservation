@@ -15,6 +15,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataAccessException;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -81,5 +83,28 @@ public class EquipmentServiceImplTest {
     public void test_getEquipmentById_dataAccessException() {
         Mockito.when(equipmentRepository.findById(1L)).thenThrow(new RuntimeException("Database error"));
         assertThrows(RuntimeException.class, () -> equipmentServiceImpl.getEquipmentById(1L));
+    }
+    @Test
+    public void test_getAllEquipments_success() {
+        Equipment equipment1 = new Equipment(1L, "Equipment 1", EquipmentType.EXCAVATOR, "Model 1", "Description 1", EquipmentStatus.NEW);
+        Equipment equipment2 = new Equipment(2L, "Equipment 2", EquipmentType.BETONNIERE, "Model 2", "Description 2", EquipmentStatus.USED);
+        when(equipmentRepository.findAll()).thenReturn(Arrays.asList(equipment1, equipment2));
+        List<EquipmentResponseDTO> result = equipmentServiceImpl.getAllEquipments();
+        assertEquals(2, result.size());
+        assertEquals("Equipment 1", result.get(0).name());
+        assertEquals("Equipment 2", result.get(1).name());
+
+    }
+    @Test
+    public void test_getAllEquipments_emptyList() {
+
+        when(equipmentRepository.findAll()).thenReturn(List.of());
+        List<EquipmentResponseDTO> result = equipmentServiceImpl.getAllEquipments();
+        assertEquals(0, result.size());
+    }
+    @Test
+    public void test_getAllEquipments_exception() {
+        when(equipmentRepository.findAll()).thenThrow(new RuntimeException("Error occurred"));
+        assertThrows(RuntimeException.class, () -> equipmentServiceImpl.getAllEquipments());
     }
 }
