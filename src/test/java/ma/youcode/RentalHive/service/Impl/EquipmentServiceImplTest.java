@@ -2,6 +2,7 @@ package ma.youcode.RentalHive.service.Impl;
 
 import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
 import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentType;
+import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentCreationRequestDTO;
 import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentResponseDTO;
 import ma.youcode.RentalHive.exception.EquipmentNotFoundException;
 import ma.youcode.RentalHive.repository.EquipmentRepository;
@@ -155,4 +156,45 @@ public class EquipmentServiceImplTest {
         assertEquals(mockEquipmentList.size(), result.size());
 
     }
+    @Test
+    public void test_createEquipment_success() {
+        // Arrange
+        EquipmentCreationRequestDTO equipmentRequest = new EquipmentCreationRequestDTO("Equipment 1", "Model 1", EquipmentType.EXCAVATOR, "Description 1", EquipmentStatus.NEW);
+        Equipment expectedEquipment = new Equipment(1L, "Equipment 1", EquipmentType.EXCAVATOR, "Model 1", "Description 1", EquipmentStatus.NEW);
+
+        Mockito.when(equipmentRepository.save(Mockito.any(Equipment.class))).thenReturn(expectedEquipment);
+
+        // Act
+        EquipmentResponseDTO result = equipmentServiceImpl.createEquipment(equipmentRequest);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(expectedEquipment.getId(), result.id());
+        assertEquals(expectedEquipment.getName(), result.name());
+        assertEquals(expectedEquipment.getEquipmentType(), result.equipmentType());
+        assertEquals(expectedEquipment.getModel(), result.model());
+        assertEquals(expectedEquipment.getDescription(), result.description());
+        assertEquals(expectedEquipment.getEquipmentStatus(), result.equipmentStatus());
+
+        Mockito.verify(equipmentRepository).save(Mockito.any(Equipment.class));
+    }
+
+    @Test
+   public void test_createEquipment_dataAccessException() {
+
+       EquipmentCreationRequestDTO equipmentRequest = new EquipmentCreationRequestDTO("Equipment 1", "Model 1", EquipmentType.EXCAVATOR, "Description 1", EquipmentStatus.NEW);
+       when(equipmentRepository.save(any())).thenThrow(new DataAccessException("Simulated data access exception") {});
+       assertThrows(RuntimeException.class, () -> equipmentServiceImpl.createEquipment(equipmentRequest));
+   }
+    @Test
+    public void test_createEquipment_emptyFields() {
+
+        EquipmentCreationRequestDTO equipmentRequest = new EquipmentCreationRequestDTO("", "", null, "", null);
+
+        assertThrows(NullPointerException.class, () -> {
+            equipmentServiceImpl.createEquipment(equipmentRequest);
+        });
+    }
+
+
 }
