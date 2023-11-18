@@ -4,6 +4,7 @@ import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
 import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentType;
 import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentCreationRequestDTO;
 import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentResponseDTO;
+import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentUpdateRequestDTO;
 import ma.youcode.RentalHive.exception.EquipmentNotFoundException;
 import ma.youcode.RentalHive.repository.EquipmentRepository;
 import ma.youcode.RentalHive.domain.entity.Equipment;
@@ -195,6 +196,5 @@ public class EquipmentServiceImplTest {
             equipmentServiceImpl.createEquipment(equipmentRequest);
         });
     }
-
 
 }

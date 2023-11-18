@@ -2,12 +2,14 @@ package ma.youcode.RentalHive.service.Impl;
 
 import liquibase.pro.packaged.L;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ma.youcode.RentalHive.domain.entity.*;
 import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
 import ma.youcode.RentalHive.domain.enums.Location.LocationFolderStatus;
 import ma.youcode.RentalHive.domain.enums.Location.LocationStatus;
 import ma.youcode.RentalHive.domain.enums.UserRole;
 import ma.youcode.RentalHive.dto.clientDTO.ClientDossierRequestDto;
+import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentResponseDTO;
 import ma.youcode.RentalHive.dto.locationDTO.*;
 import ma.youcode.RentalHive.exception.DossierNotFoundException;
 import ma.youcode.RentalHive.exception.EquipmentNotFoundException;
@@ -15,6 +17,7 @@ import ma.youcode.RentalHive.repository.EquipmentRepository;
 import ma.youcode.RentalHive.repository.LocationFolderRepository;
 import ma.youcode.RentalHive.repository.LocationRepository;
 import ma.youcode.RentalHive.service.ILocationService;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LocationService implements ILocationService {
 
     private final LocationRepository locationRepository;

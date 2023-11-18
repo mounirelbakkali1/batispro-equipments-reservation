@@ -21,7 +21,6 @@ public record EquipmentResponseDTO(
                 equipment.getModel(),
                 equipment.getDescription(),
                 equipment.getEquipmentStatus()
-
         );
     }
 
