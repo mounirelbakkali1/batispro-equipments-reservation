@@ -11,6 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor @NoArgsConstructor
 @Entity
+@Builder
 public class Equipment {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
