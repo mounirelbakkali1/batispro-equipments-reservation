@@ -66,7 +66,6 @@ public class EquipmentServiceImpl implements IEquipmentService {
     public List<EquipmentResponseDTO> getAllEquipments(){
         try {
             return equipmentRepository.findAll().stream()
-                    .filter(Objects::nonNull)
                     .map(EquipmentResponseDTO::fromEquipment)
                     .toList();
         }catch (DataAccessException e){
