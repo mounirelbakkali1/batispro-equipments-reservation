@@ -1,11 +1,14 @@
 package ma.youcode.RentalHive.dto.locationDTO;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
+import ma.youcode.RentalHive.domain.enums.Location.LocationFolderStatus;
 import ma.youcode.RentalHive.domain.enums.Location.LocationStatus;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Builder
 public record LocationDetailsDto(
-        LocationStatus status,
+        LocationFolderStatus status,
         LocationCreationRequestDto locationRequest
 ) {
 }

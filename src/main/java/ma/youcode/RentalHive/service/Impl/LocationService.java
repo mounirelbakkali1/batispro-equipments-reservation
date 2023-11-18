@@ -7,9 +7,7 @@ import ma.youcode.RentalHive.domain.enums.Location.LocationFolderStatus;
 import ma.youcode.RentalHive.domain.enums.Location.LocationStatus;
 import ma.youcode.RentalHive.domain.enums.UserRole;
 import ma.youcode.RentalHive.dto.clientDTO.ClientDossierRequestDto;
-import ma.youcode.RentalHive.dto.locationDTO.LocationCreationRequestDto;
-import ma.youcode.RentalHive.dto.locationDTO.LocationDetailsDto;
-import ma.youcode.RentalHive.dto.locationDTO.LocationFolderDetailsDto;
+import ma.youcode.RentalHive.dto.locationDTO.*;
 import ma.youcode.RentalHive.repository.EquipmentRepository;
 import ma.youcode.RentalHive.repository.LocationFolderRepository;
 import ma.youcode.RentalHive.repository.LocationRepository;
@@ -20,6 +18,8 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +28,7 @@ public class LocationService implements ILocationService {
     private final LocationRepository locationRepository;
     private final LocationFolderRepository locationFolderRepository;
     private final EquipmentRepository equipmentRepository;
+    private final LocationCreationRequestDtoMapper locationCreationRequestDtoMapper;
 
     @Override
     public LocationFolderDetailsDto createLocationFolder(@Valid LocationCreationRequestDto locationRequest) {
@@ -46,7 +47,7 @@ public class LocationService implements ILocationService {
                             .orElseThrow(() -> new IllegalArgumentException("Equipment not found"));
                     List<EquipmentUnit> equipmentUnits = equipment.getEquipmentUnits();
                     long availableEquipmentUnits = equipmentUnits.stream()
-                            .filter(eu -> eu.getEquipmentStatus().equals(EquipmentStatus.NEW))
+                            .filter(eu -> eu.getEquipmentStatus().equals(EquipmentStatus.valueOf(lr.status())))
                             .count();
 
                     if (availableEquipmentUnits < lr.quantity()) {
@@ -81,13 +82,33 @@ public class LocationService implements ILocationService {
         locationFolderRepository.save(dossierLocation);
         return LocationFolderDetailsDto.builder()
                 .locationDetails(
-                        new LocationDetailsDto(LocationStatus.PENDING, locationRequest)
+                        new LocationDetailsDto(LocationFolderStatus.PENDING, locationRequest)
                 ).build();
     }
 
     @Override
     public LocationFolderDetailsDto consultLocationFolder(String dossierNumber) {
-        return null;
+        Optional<DossierLocation> byDossierNumber = locationFolderRepository.findByDossierNumber(dossierNumber);
+        DossierLocation dossierLocation = byDossierNumber.orElseThrow(() -> new IllegalArgumentException("Dossier not found"));
+        List<Location> locationList = dossierLocation.getLocation();
+        List<LocationRequestDto> locationRequestDtos = locationList
+                .stream()
+                .map(locationCreationRequestDtoMapper::mapToDto)
+                .toList();
+        LocationDetailsDto locationDetailsDto = LocationDetailsDto.builder()
+                .locationRequest(
+                        LocationCreationRequestDto.builder()
+                                .locationRequests(
+                                        locationRequestDtos
+                                ).build()
+                )
+                .status(dossierLocation.getStatus())
+                .build();
+        return LocationFolderDetailsDto.builder()
+                .locationDetails(
+                       locationDetailsDto
+                ).dateSubmission(dossierLocation.getDateCreation().toString())
+                .build();
     }
 
     @Override

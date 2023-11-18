@@ -19,6 +19,7 @@
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 	</properties>
 	<dependencies>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

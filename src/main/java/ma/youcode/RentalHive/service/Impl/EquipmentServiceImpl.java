@@ -106,7 +106,8 @@ public class EquipmentServiceImpl implements IEquipmentService {
             throw new RuntimeException("Failed to search equipment", e);
 
         }
-
     }
+
+
 
 }
