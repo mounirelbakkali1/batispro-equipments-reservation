@@ -1,17 +1,20 @@
 package ma.youcode.RentalHive.service.Impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ma.youcode.RentalHive.domain.entity.*;
 import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
 import ma.youcode.RentalHive.domain.enums.Location.LocationFolderStatus;
 import ma.youcode.RentalHive.domain.enums.Location.LocationStatus;
 import ma.youcode.RentalHive.domain.enums.UserRole;
 import ma.youcode.RentalHive.dto.clientDTO.ClientDossierRequestDto;
+import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentResponseDTO;
 import ma.youcode.RentalHive.dto.locationDTO.*;
 import ma.youcode.RentalHive.repository.EquipmentRepository;
 import ma.youcode.RentalHive.repository.LocationFolderRepository;
 import ma.youcode.RentalHive.repository.LocationRepository;
 import ma.youcode.RentalHive.service.ILocationService;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -23,6 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LocationService implements ILocationService {
 
     private final LocationRepository locationRepository;
@@ -128,7 +132,14 @@ public class LocationService implements ILocationService {
 
     @Override
     public List<LocationDetailsDto> findAllLocations() {
-        return null;
+        try {
+            return locationRepository.findAll().stream()
+                    .map(LocationDetailsDto::locationDetailsDto)
+                    .collect(Collectors.toList());
+        }catch (DataAccessException e){
+            log.error("Error occurred during fetching all locations", e);
+            throw new RuntimeException("Failed to fetch locations", e);
+        }
     }
 
     @Override

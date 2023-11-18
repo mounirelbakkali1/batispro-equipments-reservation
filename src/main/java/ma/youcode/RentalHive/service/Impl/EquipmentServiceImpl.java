@@ -41,6 +41,7 @@ public class EquipmentServiceImpl implements IEquipmentService {
     @Override
     public EquipmentResponseDTO updateEquipment(Long id, EquipmentUpdateRequestDTO updateRequestDTO){
         try {
+            Objects.requireNonNull(id, "Equipment ID must not be null");
             Equipment equipment = equipmentRepository.save(EquipmentUpdateRequestDTO.equipmentFromEquipmentUpdateRequestDTO(id, updateRequestDTO));
             log.info("Equipment Updated Successfully");
             return EquipmentResponseDTO.fromEquipment(equipment);

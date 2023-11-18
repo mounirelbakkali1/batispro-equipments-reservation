@@ -4,6 +4,7 @@ import ma.youcode.RentalHive.domain.entity.Equipment;
 import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
 import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentType;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public record EquipmentUpdateRequestDTO(
