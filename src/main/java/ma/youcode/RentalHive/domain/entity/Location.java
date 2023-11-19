@@ -25,8 +25,14 @@ public class Location {
     private LocationStatus status;
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
-    @ManyToOne
+    @ManyToOne()
+    @JoinTable(name = "equipment_unit_location",
+            joinColumns = @JoinColumn(name = "location_id"),
+            inverseJoinColumns = @JoinColumn(name = "equipment_unit_id"))
     private EquipmentUnit equipmentUnit;
+
+    @ManyToOne
+    private Equipment equipment;
 
     @ManyToOne
     private DossierLocation dossierLocation;
