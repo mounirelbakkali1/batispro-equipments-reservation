@@ -1,6 +1,5 @@
 package ma.youcode.RentalHive.service.Impl;
 
-import liquibase.pro.packaged.L;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.youcode.RentalHive.domain.entity.*;
@@ -9,12 +8,14 @@ import ma.youcode.RentalHive.domain.enums.Location.LocationFolderStatus;
 import ma.youcode.RentalHive.domain.enums.Location.LocationStatus;
 import ma.youcode.RentalHive.domain.enums.PaymentStatus;
 import ma.youcode.RentalHive.domain.enums.UserRole;
+import ma.youcode.RentalHive.dto.LocationStatusUpdateDto;
 import ma.youcode.RentalHive.dto.clientDTO.ClientDossierRequestDto;
 import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentResponseDTO;
 import ma.youcode.RentalHive.dto.locationDTO.*;
 import ma.youcode.RentalHive.exception.DossierNotFoundException;
 import ma.youcode.RentalHive.exception.EquipmentNotFoundException;
 import ma.youcode.RentalHive.repository.EquipmentRepository;
+import ma.youcode.RentalHive.repository.EquipmentUnitRepository;
 import ma.youcode.RentalHive.repository.LocationFolderRepository;
 import ma.youcode.RentalHive.repository.LocationRepository;
 import ma.youcode.RentalHive.service.ILocationService;
@@ -22,11 +23,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +35,7 @@ public class LocationService implements ILocationService {
     private final LocationRepository locationRepository;
     private final LocationFolderRepository locationFolderRepository;
     private final EquipmentRepository equipmentRepository;
+    private final EquipmentUnitRepository equipmentUnitRepository;
     private final LocationCreationRequestDtoMapper locationCreationRequestDtoMapper;
     private final LocationFolderDetailsDtoMapper locationFolderDetailsDtoMapper;
 
@@ -65,6 +65,7 @@ public class LocationService implements ILocationService {
                     }
                     // lastly
                     Location location = Location.builder()
+                            .reference(UUID.randomUUID())
                             .quantity(lr.quantity())
                             .startDate(lr.startDate())
                             .endDate(lr.endDate())
@@ -144,16 +145,31 @@ public class LocationService implements ILocationService {
         dossierLocation.setStatus(LocationFolderStatus.ACCEPTED);
         dossierLocation.getLocation()
                 .stream()
-                .forEach(l->{
-                    l.setStatus(LocationStatus.ACCEPTED);
-                });
+                .forEach(l->l.setStatus(LocationStatus.ACCEPTED));
         DossierLocation updated = locationFolderRepository.save(dossierLocation);
         return   locationFolderDetailsDtoMapper.mapToDto(updated);
     }
 
     @Override
-    public LocationFolderDetailsDto resolveLocationFolder(String locationFolderNumber, LocationDetailsDto locationDetails) throws DossierNotFoundException {
+    public LocationFolderDetailsDto resolveLocationFolder(String locationFolderNumber, List<LocationStatusUpdateDto> statusUpdates) throws DossierNotFoundException {
         DossierLocation dossierLocation = getDossierLocation(locationFolderNumber);
+        List<Location> locationList = dossierLocation.getLocation();
+        if(locationList.size() < statusUpdates.size())
+            throw new IllegalArgumentException("Invalid number of status updates");
+        for (var locationStatusUpdate : statusUpdates) {
+            Optional<Location> location = locationList.stream()
+                    .filter(l -> l.getReference().equals(locationStatusUpdate.locationRequestReference()))
+                    .findFirst();
+            if(location.isEmpty())
+                throw new IllegalArgumentException("Invalid equipment reference");
+
+            Location locationToUpdate = location.get();
+            locationToUpdate.setStatus(locationStatusUpdate.status());
+            locationToUpdate.setPaymentStatus(locationStatusUpdate.paymentStatus());
+            equipmentUnitRepository.findByRef(locationStatusUpdate.equipmentUnitReference())
+                    .ifPresent(locationToUpdate::setEquipmentUnit);
+            locationRepository.save(locationToUpdate);
+        }
         return null;
     }
 
