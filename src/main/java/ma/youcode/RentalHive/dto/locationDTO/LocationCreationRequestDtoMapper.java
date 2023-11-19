@@ -13,7 +13,8 @@ public class LocationCreationRequestDtoMapper {
                 .startDate(location.getStartDate())
                 .endDate(location.getEndDate())
                 .quantity(location.getQuantity())
-                .equipmentReference(location.getEquipmentUnit().getEquipment().getModel())
+                .equipmentReference(location.getEquipment().getModel())
+                .paymentStatus(location.getPaymentStatus()==null?null:location.getPaymentStatus().toString())
                 .build();
     }
 }
