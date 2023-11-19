@@ -10,6 +10,7 @@ import ma.youcode.RentalHive.dto.locationDTO.LocationDetailsDto;
 public record LocationFolderDetailsDto(
     String dateSubmission,
     String validatedBy,
+    String folderNumber,
     LocationDetailsDto locationDetails
 ) {
 }
