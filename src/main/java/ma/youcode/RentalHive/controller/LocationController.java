@@ -1,6 +1,7 @@
 package ma.youcode.RentalHive.controller;
 
 import lombok.RequiredArgsConstructor;
+import ma.youcode.RentalHive.dto.LocationStatusUpdateDto;
 import ma.youcode.RentalHive.dto.locationDTO.LocationCreationRequestDto;
 import ma.youcode.RentalHive.dto.locationDTO.LocationFolderDetailsDto;
 import ma.youcode.RentalHive.exception.DossierNotFoundException;
@@ -43,6 +44,12 @@ public class LocationController {
     public ResponseEntity<List<LocationFolderDetailsDto>> getAllLocationFolders(){
         List<LocationFolderDetailsDto> allLocationFolders = locationService.findAllLocationFolders();
         return ResponseEntity.ok(allLocationFolders);
+    }
+
+    @PostMapping("/folder/{folderNumber}/resolve")
+    public ResponseEntity<?> resolveLocationFolder(@NotBlank @PathVariable String folderNumber, @RequestBody List<LocationStatusUpdateDto> statusUpdates) throws DossierNotFoundException {
+        LocationFolderDetailsDto locationFolder = locationService.resolveLocationFolder(folderNumber, statusUpdates);
+        return ResponseEntity.ok(locationFolder);
     }
 
 
