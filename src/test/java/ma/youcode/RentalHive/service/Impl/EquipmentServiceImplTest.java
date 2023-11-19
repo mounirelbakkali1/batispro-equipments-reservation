@@ -4,6 +4,7 @@ import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
 import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentType;
 import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentCreationRequestDTO;
 import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentResponseDTO;
+import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentUpdateRequestDTO;
 import ma.youcode.RentalHive.exception.EquipmentNotFoundException;
 import ma.youcode.RentalHive.repository.EquipmentRepository;
 import ma.youcode.RentalHive.domain.entity.Equipment;
@@ -67,7 +68,15 @@ public class EquipmentServiceImplTest {
 
     */
 
-
+    @Test
+    public void test_deleteEquipment_multipleEquipments() {
+        when(equipmentRepository.findById(1L)).thenReturn(Optional.of(new Equipment()));
+        when(equipmentRepository.findById(2L)).thenReturn(Optional.of(new Equipment()));
+        equipmentServiceImpl.deleteEquipmentById(1L);
+        Mockito.verify(equipmentRepository, Mockito.times(1)).deleteById(1L);
+        equipmentServiceImpl.deleteEquipmentById(2L);
+        Mockito.verify(equipmentRepository, Mockito.times(1)).deleteById(2L);
+    }
 
     @Test
     public void test_getEquipmentById_success() {
@@ -205,6 +214,17 @@ public class EquipmentServiceImplTest {
             equipmentServiceImpl.createEquipment(equipmentRequest);
         });
     }
+
+    @Test
+    public void test_updateEquipment_shouldThrowNullPointerExceptionIfIdIsNull() {
+        // Arrange
+        Long id = null;
+        EquipmentUpdateRequestDTO updateRequestDTO = new EquipmentUpdateRequestDTO("Updated Name", "Updated Model", EquipmentType.BETONNIERE, "Updated Description", EquipmentStatus.OLD);
+
+        // Act and Assert
+        assertThrows(NullPointerException.class, () -> equipmentServiceImpl.updateEquipment(id, updateRequestDTO));
+    }
+
 
 
 }
