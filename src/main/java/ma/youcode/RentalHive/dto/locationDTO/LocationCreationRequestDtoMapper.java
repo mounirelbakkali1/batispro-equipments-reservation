@@ -9,6 +9,7 @@ public class LocationCreationRequestDtoMapper {
 
     public LocationRequestDto mapToDto(Location location){
         return LocationRequestDto.builder()
+                .reference(location.getReference())
                 .status(location.getStatus().toString())
                 .startDate(location.getStartDate())
                 .endDate(location.getEndDate())
