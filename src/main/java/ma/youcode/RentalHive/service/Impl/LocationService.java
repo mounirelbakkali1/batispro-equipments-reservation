@@ -7,6 +7,7 @@ import ma.youcode.RentalHive.domain.entity.*;
 import ma.youcode.RentalHive.domain.enums.Equipment.EquipmentStatus;
 import ma.youcode.RentalHive.domain.enums.Location.LocationFolderStatus;
 import ma.youcode.RentalHive.domain.enums.Location.LocationStatus;
+import ma.youcode.RentalHive.domain.enums.PaymentStatus;
 import ma.youcode.RentalHive.domain.enums.UserRole;
 import ma.youcode.RentalHive.dto.clientDTO.ClientDossierRequestDto;
 import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentResponseDTO;
@@ -56,21 +57,23 @@ public class LocationService implements ILocationService {
                     List<EquipmentUnit> equipmentUnits = equipment.getEquipmentUnits();
                     long availableEquipmentUnits = equipmentUnits.stream()
                             .filter(eu -> eu.getEquipmentStatus().equals(EquipmentStatus.valueOf(lr.status())))
-                            .count();
+                            .map(EquipmentUnit::getQuantity)
+                            .reduce(0, Integer::sum);
 
                     if (availableEquipmentUnits < lr.quantity()) {
-                        throw new EquipmentNotFoundException("Not enough equipment");
+                        throw new EquipmentNotFoundException("Equipment out of stock");
                     }
                     // lastly
                     Location location = Location.builder()
                             .quantity(lr.quantity())
                             .startDate(lr.startDate())
                             .endDate(lr.endDate())
+                            .equipment(equipment)
                             .build();
                     locationsRequest.add(location);
                 });
 
-        String uniqueDossierNumber = "D" + LocalDateTime.now();
+        String uniqueDossierNumber = "D" + LocalDateTime.now().getNano();
         ClientDossierRequestDto clientDossierRequestDto = locationRequest.clientDossierRequestDto();
          Client client = new Client(
                 String.join(" ", clientDossierRequestDto.firstName(), clientDossierRequestDto.lastName()),
@@ -83,14 +86,26 @@ public class LocationService implements ILocationService {
         );
         DossierLocation dossierLocation = DossierLocation.builder()
                 .dossierNumber(uniqueDossierNumber)
+                .dateCreation(LocalDateTime.now())
                 .location(locationsRequest)
                 .client(client)
                 .status(LocationFolderStatus.PENDING)
                 .build();
-        locationFolderRepository.save(dossierLocation);
+        DossierLocation savedDossier = locationFolderRepository.save(dossierLocation);
+        locationsRequest
+                .forEach(l -> {
+                    l.setStatus(LocationStatus.PENDING);
+                    l.setPaymentStatus(PaymentStatus.PENDING);
+                    l.setDossierLocation(savedDossier);
+                    locationRepository.save(l);
+                });
         return LocationFolderDetailsDto.builder()
+                .folderNumber(uniqueDossierNumber)
                 .locationDetails(
-                        new LocationDetailsDto(LocationFolderStatus.PENDING, locationRequest)
+                        LocationDetailsDto.builder()
+                                .locationRequest(locationRequest)
+                                .status(LocationFolderStatus.PENDING)
+                                .build()
                 ).build();
     }
 
@@ -127,6 +142,11 @@ public class LocationService implements ILocationService {
     public LocationFolderDetailsDto acceptLocationFolder(String dossierNumber) throws DossierNotFoundException {
         DossierLocation dossierLocation = getDossierLocation(dossierNumber);
         dossierLocation.setStatus(LocationFolderStatus.ACCEPTED);
+        dossierLocation.getLocation()
+                .stream()
+                .forEach(l->{
+                    l.setStatus(LocationStatus.ACCEPTED);
+                });
         DossierLocation updated = locationFolderRepository.save(dossierLocation);
         return   locationFolderDetailsDtoMapper.mapToDto(updated);
     }

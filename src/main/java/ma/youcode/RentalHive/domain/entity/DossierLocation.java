@@ -19,7 +19,7 @@ public class DossierLocation {
     private String dossierNumber ;
     @Column(name = "date_creation",columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime dateCreation ;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Client client ;
     @Enumerated(EnumType.STRING)
     private LocationFolderStatus status ;

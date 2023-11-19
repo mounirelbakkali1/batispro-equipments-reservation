@@ -15,8 +15,8 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 public class GlobalExeptionHandler {
 
-@ExceptionHandler(EquipmentNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleEquipmentNotFoundException(EquipmentNotFoundException ex, HttpServletRequest request){
+@ExceptionHandler({EquipmentNotFoundException.class, DossierNotFoundException.class})
+    public ResponseEntity<ErrorResponse> handleEquipmentNotFoundException(Exception ex, HttpServletRequest request){
 
     ErrorResponse errorResponse = new ErrorResponse(
             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
@@ -27,6 +27,5 @@ public class GlobalExeptionHandler {
     );
 
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-
 }
 }
