@@ -164,6 +164,10 @@ public class LocationService implements ILocationService {
             locationToUpdate.setPaymentStatus(locationStatusUpdate.paymentStatus());
             EquipmentUnit equipmentUnitWanted = equipmentUnitRepository.findByRef(locationStatusUpdate.equipmentUnitReference())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid equipment unit reference"));
+            // check if the equipment unit is available
+            boolean couldBePlaced = checkIfLocationCouldBePlaced(locationCreationRequestDtoMapper.mapToDto(locationToUpdate));
+            if(!couldBePlaced)
+                throw new IllegalArgumentException(String.format("Could not resolve location with reference %s with the given equipment unit %s", locationToUpdate.getReference(), equipmentUnitWanted.getRef()));
             locationToUpdate.setEquipmentUnit(equipmentUnitWanted);
             locationRepository.save(locationToUpdate);
         }
@@ -230,7 +234,10 @@ public class LocationService implements ILocationService {
         Optional<Equipment> equipment = equipmentRepository.findByModel(location.equipmentReference());
         if(equipment.isEmpty())
             throw new  IllegalArgumentException(String.format("Equipment with reference %s not found", location.equipmentReference()));
-        int totalEquipmentUnitForRequiredEquipment = equipment.get().getEquipmentUnits().size();
+        int totalEquipmentUnitForRequiredEquipment = equipment.get().getEquipmentUnits()
+                .stream()
+                .map(EquipmentUnit::getQuantity)
+                .reduce(0, Integer::sum);
         return totalEquipmentUnitForRequiredEquipment - reservedQuantityFromTheRequiredModel >= location.quantity();
     }
 
