@@ -162,11 +162,27 @@ public class LocationService implements ILocationService {
             Location locationToUpdate = location.get();
             locationToUpdate.setStatus(locationStatusUpdate.status());
             locationToUpdate.setPaymentStatus(locationStatusUpdate.paymentStatus());
-            equipmentUnitRepository.findByRef(locationStatusUpdate.equipmentUnitReference())
-                    .ifPresent(locationToUpdate::setEquipmentUnit);
+            EquipmentUnit equipmentUnitWanted = equipmentUnitRepository.findByRef(locationStatusUpdate.equipmentUnitReference())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid equipment unit reference"));
+            locationToUpdate.setEquipmentUnit(equipmentUnitWanted);
             locationRepository.save(locationToUpdate);
         }
-        return null;
+        return LocationFolderDetailsDto.builder()
+                .folderNumber(locationFolderNumber)
+                .validatedBy("Admin")
+                .locationDetails(
+                        LocationDetailsDto.builder()
+                                .locationRequest(
+                                        LocationCreationRequestDto.builder()
+                                                .locationRequests(
+                                                        locationList.stream()
+                                                                .map(locationCreationRequestDtoMapper::mapToDto)
+                                                                .toList()
+                                                ).build()
+                                )
+                                .status(LocationFolderStatus.ACCEPTED)
+                                .build()
+                ).build();
     }
 
     @Override
