@@ -166,11 +166,31 @@ public class LocationService implements ILocationService {
             Location locationToUpdate = location.get();
             locationToUpdate.setStatus(locationStatusUpdate.status());
             locationToUpdate.setPaymentStatus(locationStatusUpdate.paymentStatus());
-            equipmentUnitRepository.findByRef(locationStatusUpdate.equipmentUnitReference())
-                    .ifPresent(locationToUpdate::setEquipmentUnit);
+            EquipmentUnit equipmentUnitWanted = equipmentUnitRepository.findByRef(locationStatusUpdate.equipmentUnitReference())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid equipment unit reference"));
+            // check if the equipment unit is available
+            boolean couldBePlaced = checkIfLocationCouldBePlaced(locationCreationRequestDtoMapper.mapToDto(locationToUpdate));
+            if(!couldBePlaced)
+                throw new IllegalArgumentException(String.format("Could not resolve location with reference %s with the given equipment unit %s", locationToUpdate.getReference(), equipmentUnitWanted.getRef()));
+            locationToUpdate.setEquipmentUnit(equipmentUnitWanted);
             locationRepository.save(locationToUpdate);
         }
-        return null;
+        return LocationFolderDetailsDto.builder()
+                .folderNumber(locationFolderNumber)
+                .validatedBy("Admin")
+                .locationDetails(
+                        LocationDetailsDto.builder()
+                                .locationRequest(
+                                        LocationCreationRequestDto.builder()
+                                                .locationRequests(
+                                                        locationList.stream()
+                                                                .map(locationCreationRequestDtoMapper::mapToDto)
+                                                                .toList()
+                                                ).build()
+                                )
+                                .status(LocationFolderStatus.ACCEPTED)
+                                .build()
+                ).build();
     }
 
     @Override
@@ -218,7 +238,10 @@ public class LocationService implements ILocationService {
         Optional<Equipment> equipment = equipmentRepository.findByModel(location.equipmentReference());
         if(equipment.isEmpty())
             throw new  IllegalArgumentException(String.format("Equipment with reference %s not found", location.equipmentReference()));
-        int totalEquipmentUnitForRequiredEquipment = equipment.get().getEquipmentUnits().size();
+        int totalEquipmentUnitForRequiredEquipment = equipment.get().getEquipmentUnits()
+                .stream()
+                .map(EquipmentUnit::getQuantity)
+                .reduce(0, Integer::sum);
         return totalEquipmentUnitForRequiredEquipment - reservedQuantityFromTheRequiredModel >= location.quantity();
     }
 
