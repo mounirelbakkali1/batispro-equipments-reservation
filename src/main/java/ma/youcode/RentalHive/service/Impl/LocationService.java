@@ -225,8 +225,8 @@ public class LocationService implements ILocationService {
 
     public boolean checkIfLocationCouldBePlaced(@Valid LocationRequestDto location){
         List<Location> locations = locationRepository.
-                findByStartDateBetweenOrEndDateBetweenAndEquipmentUnit_EquipmentModelAndStatus(location.startDate(), location.endDate(), location.startDate(), location.endDate(),location.equipmentReference(),LocationStatus.ACCEPTED);
-        System.out.println(locations);
+                findByStartDateBetweenAndStatusAndEquipmentUnit_EquipmentModelOrEndDateBetweenAndStatusAndEquipmentUnit_EquipmentModel(location.startDate(), location.endDate(),LocationStatus.ACCEPTED,location.equipmentReference(), location.startDate(), location.endDate(),LocationStatus.ACCEPTED,location.equipmentReference());
+        System.out.println("locations : "+locations.size());
         Integer reservedQuantityFromTheRequiredModel = locations.stream()
                 .map(l -> {
                     Set<LocalDate> reservedDatesForEquipment = getReservedDatesForEquipment(l);
