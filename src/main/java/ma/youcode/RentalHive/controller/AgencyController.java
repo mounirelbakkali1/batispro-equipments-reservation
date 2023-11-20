@@ -31,8 +31,19 @@ public class AgencyController {
         return ResponseEntity.ok(AgencyService.getAgencyById(id));
     }
 
+//    @GetMapping("/{cin}")
+//    public ResponseEntity<AgencyResponseDTO> getAgencyByCIN(@Valid @PathVariable("cin") String cin){
+//        return ResponseEntity.ok(AgencyService.getAgencyById(cin));
+//    }
+//
+//    @GetMapping("/{local}")
+//    public ResponseEntity<AgencyResponseDTO> getAgencyByLocal(@Valid @PathVariable("local") String local){
+//        return ResponseEntity.ok(AgencyService.getAgencyById(local));
+//    }
+
     @PostMapping
     public ResponseEntity<AgencyResponseDTO> createAgency(@Valid @RequestBody AgencyCreateAndUpdateRequestDTO requestDTO){
+//        if(requestDTO.user().getCin())
         AgencyResponseDTO createAgency = AgencyService.createAgency(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createAgency);
     }

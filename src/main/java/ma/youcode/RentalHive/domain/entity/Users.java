@@ -19,18 +19,12 @@ public class Users{
     @Enumerated(EnumType.STRING)
     private UserRole UserRole;
     private boolean enable;
-    private String Address;
-    private String phone;
-    private String cin;
 
 
-    public Users(String name, String email, ma.youcode.RentalHive.domain.enums.UserRole userRole, boolean enable, String address, String phone, String cin) {
+    public Users(String name, String email, ma.youcode.RentalHive.domain.enums.UserRole userRole, boolean enable) {
         this.name = name;
         this.email = email;
         UserRole = userRole;
         this.enable = enable;
-        this.Address = address;
-        this.phone = phone;
-        this.cin = cin;
     }
 }

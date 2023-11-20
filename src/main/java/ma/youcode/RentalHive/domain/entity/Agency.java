@@ -1,14 +1,13 @@
 package ma.youcode.RentalHive.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data @AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor @NoArgsConstructor
 @Builder
 public class Agency {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,4 +18,5 @@ public class Agency {
     @ManyToOne
     @JoinColumn(name = "director_id")
     private Users users;
+
 }
