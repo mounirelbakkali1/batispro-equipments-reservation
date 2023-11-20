@@ -1,7 +1,8 @@
-package ma.youcode.RentalHive.dto.locationDTO;
+package ma.youcode.RentalHive.mapper;
 
 import lombok.RequiredArgsConstructor;
 import ma.youcode.RentalHive.domain.entity.DossierLocation;
+import ma.youcode.RentalHive.dto.locationDTO.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -1,6 +1,7 @@
-package ma.youcode.RentalHive.dto.locationDTO;
+package ma.youcode.RentalHive.mapper;
 
 import ma.youcode.RentalHive.domain.entity.Location;
+import ma.youcode.RentalHive.dto.locationDTO.LocationRequestDto;
 import org.springframework.stereotype.Component;
 
 @Component

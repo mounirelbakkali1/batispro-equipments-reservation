@@ -44,6 +44,8 @@ public class EquipmentServiceImplTest {
         equipmentServiceImpl.deleteEquipmentById(1L);
         Mockito.verify(equipmentRepository, Mockito.times(1)).deleteById(1L);
     }
+
+
     @Test
     public void test_deleteEquipment_notFound() {
         when(equipmentRepository.findById(1L)).thenReturn(Optional.empty());
@@ -51,15 +53,31 @@ public class EquipmentServiceImplTest {
             equipmentServiceImpl.deleteEquipmentById(1L);
         });
     }
-    /* @Test
+
+
+
+
+
+   /*  @Test
         public void test_deleteEquipment_dataAccessException() {
-        when(equipmentRepository.findById(any())).thenThrow(DataAccessException.class);
+        when(equipmentRepository.findById(1L)).thenThrow(DataAccessException.class);
         assertThrows(RuntimeException.class, () -> {
             equipmentServiceImpl.deleteEquipmentById(1L);
         });
     }
 
-   */
+    */
+
+    @Test
+    public void test_deleteEquipment_multipleEquipments() {
+        when(equipmentRepository.findById(1L)).thenReturn(Optional.of(new Equipment()));
+        when(equipmentRepository.findById(2L)).thenReturn(Optional.of(new Equipment()));
+        equipmentServiceImpl.deleteEquipmentById(1L);
+        Mockito.verify(equipmentRepository, Mockito.times(1)).deleteById(1L);
+        equipmentServiceImpl.deleteEquipmentById(2L);
+        Mockito.verify(equipmentRepository, Mockito.times(1)).deleteById(2L);
+    }
+
     @Test
     public void test_getEquipmentById_success() {
 
@@ -159,13 +177,13 @@ public class EquipmentServiceImplTest {
     }
     @Test
     public void test_createEquipment_success() {
-        // Arrange
+
         EquipmentCreationRequestDTO equipmentRequest = new EquipmentCreationRequestDTO("Equipment 1", "Model 1", EquipmentType.EXCAVATOR, "Description 1", EquipmentStatus.NEW);
         Equipment expectedEquipment = new Equipment(1L, "Equipment 1", EquipmentType.EXCAVATOR, "Model 1", "Description 1", EquipmentStatus.NEW);
 
         Mockito.when(equipmentRepository.save(Mockito.any(Equipment.class))).thenReturn(expectedEquipment);
 
-        // Act
+
         EquipmentResponseDTO result = equipmentServiceImpl.createEquipment(equipmentRequest);
 
         // Assert
@@ -196,5 +214,19 @@ public class EquipmentServiceImplTest {
             equipmentServiceImpl.createEquipment(equipmentRequest);
         });
     }
+
+
+    @Test
+    public void test_updateEquipment_shouldThrowNullPointerExceptionIfIdIsNull() {
+        // Arrange
+        Long id = null;
+        EquipmentUpdateRequestDTO updateRequestDTO = new EquipmentUpdateRequestDTO("Updated Name", "Updated Model", EquipmentType.BETONNIERE, "Updated Description", EquipmentStatus.OLD);
+
+        // Act and Assert
+        assertThrows(NullPointerException.class, () -> equipmentServiceImpl.updateEquipment(id, updateRequestDTO));
+    }
+
+
+
 
 }

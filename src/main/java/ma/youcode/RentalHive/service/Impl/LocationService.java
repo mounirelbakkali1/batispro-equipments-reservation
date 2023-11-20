@@ -10,16 +10,16 @@ import ma.youcode.RentalHive.domain.enums.PaymentStatus;
 import ma.youcode.RentalHive.domain.enums.UserRole;
 import ma.youcode.RentalHive.dto.LocationStatusUpdateDto;
 import ma.youcode.RentalHive.dto.clientDTO.ClientDossierRequestDto;
-import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentResponseDTO;
 import ma.youcode.RentalHive.dto.locationDTO.*;
 import ma.youcode.RentalHive.exception.DossierNotFoundException;
 import ma.youcode.RentalHive.exception.EquipmentNotFoundException;
+import ma.youcode.RentalHive.mapper.LocationCreationRequestDtoMapper;
+import ma.youcode.RentalHive.mapper.LocationFolderDetailsDtoMapper;
 import ma.youcode.RentalHive.repository.EquipmentRepository;
 import ma.youcode.RentalHive.repository.EquipmentUnitRepository;
 import ma.youcode.RentalHive.repository.LocationFolderRepository;
 import ma.youcode.RentalHive.repository.LocationRepository;
 import ma.youcode.RentalHive.service.ILocationService;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
