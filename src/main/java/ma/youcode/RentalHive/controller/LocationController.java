@@ -1,18 +1,19 @@
 package ma.youcode.RentalHive.controller;
 
 import lombok.RequiredArgsConstructor;
+import ma.youcode.RentalHive.dto.LocationStatusUpdateDto;
 import ma.youcode.RentalHive.dto.locationDTO.LocationCreationRequestDto;
 import ma.youcode.RentalHive.dto.locationDTO.LocationFolderDetailsDto;
+import ma.youcode.RentalHive.exception.DossierNotFoundException;
 import ma.youcode.RentalHive.service.ILocationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/locations")
@@ -27,4 +28,29 @@ public class LocationController {
                 .created(new URI("/v1/locations"))
                 .body(locationFolder);
     }
+    @PostMapping("/folder/{folderNumber}")
+    public ResponseEntity<LocationFolderDetailsDto> consultLocationFolder(@NotBlank @PathVariable String folderNumber) throws DossierNotFoundException {
+        LocationFolderDetailsDto locationFolder = locationService.consultLocationFolder(folderNumber);
+        return ResponseEntity.ok(locationFolder);
+    }
+
+    @PostMapping("/folder/{folderNumber}/validate")
+    public ResponseEntity<LocationFolderDetailsDto> validateLocationFolder(@NotBlank @PathVariable String folderNumber) throws DossierNotFoundException {
+        LocationFolderDetailsDto locationFolder = locationService.acceptLocationFolder(folderNumber);
+        return ResponseEntity.ok(locationFolder);
+    }
+
+    @GetMapping("/folder")
+    public ResponseEntity<List<LocationFolderDetailsDto>> getAllLocationFolders(){
+        List<LocationFolderDetailsDto> allLocationFolders = locationService.findAllLocationFolders();
+        return ResponseEntity.ok(allLocationFolders);
+    }
+
+    @PostMapping("/folder/{folderNumber}/resolve")
+    public ResponseEntity<?> resolveLocationFolder(@NotBlank @PathVariable String folderNumber, @RequestBody List<LocationStatusUpdateDto> statusUpdates) throws DossierNotFoundException {
+        LocationFolderDetailsDto locationFolder = locationService.resolveLocationFolder(folderNumber, statusUpdates);
+        return ResponseEntity.ok(locationFolder);
+    }
+
+
 }

@@ -215,6 +215,7 @@ public class EquipmentServiceImplTest {
         });
     }
 
+
     @Test
     public void test_updateEquipment_shouldThrowNullPointerExceptionIfIdIsNull() {
         // Arrange
@@ -224,6 +225,7 @@ public class EquipmentServiceImplTest {
         // Act and Assert
         assertThrows(NullPointerException.class, () -> equipmentServiceImpl.updateEquipment(id, updateRequestDTO));
     }
+
 
 
 

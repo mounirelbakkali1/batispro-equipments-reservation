@@ -41,7 +41,6 @@ public class EquipmentController {
 
     @PutMapping("/{equipmentId}")
     public ResponseEntity<EquipmentResponseDTO> updateEquipment(@Valid @PathVariable("equipmentId") Long equipmentId,@Valid @RequestBody EquipmentUpdateRequestDTO equipmentUpdateRequestDTO){
-        System.out.println(equipmentUpdateRequestDTO);
         log.info("Request received to update a new equipment.");
         return ResponseEntity.status(HttpStatus.OK).body(equipmentService.updateEquipment(equipmentId, equipmentUpdateRequestDTO));
     }

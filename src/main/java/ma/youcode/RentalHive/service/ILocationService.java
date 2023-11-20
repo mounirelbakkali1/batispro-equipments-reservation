@@ -1,6 +1,7 @@
 package ma.youcode.RentalHive.service;
 
 import ma.youcode.RentalHive.domain.enums.Location.LocationStatus;
+import ma.youcode.RentalHive.dto.LocationStatusUpdateDto;
 import ma.youcode.RentalHive.dto.locationDTO.LocationCreationRequestDto;
 import ma.youcode.RentalHive.dto.locationDTO.LocationDetailsDto;
 import ma.youcode.RentalHive.dto.locationDTO.LocationFolderDetailsDto;
@@ -15,7 +16,7 @@ public interface ILocationService {
 
     public LocationFolderDetailsDto acceptLocationFolder(String dossierNumber) throws DossierNotFoundException;
 
-    public LocationFolderDetailsDto resolveLocationFolder(String locationFolderNumber, LocationDetailsDto locationDetails) throws DossierNotFoundException;
+    public LocationFolderDetailsDto resolveLocationFolder(String locationFolderNumber,  List<LocationStatusUpdateDto> statusUpdates) throws DossierNotFoundException;
 
     public List<LocationFolderDetailsDto> findAllLocationFolders();
 
