@@ -1,6 +1,5 @@
 package ma.youcode.RentalHive.repository;
 
-import liquibase.pro.packaged.S;
 import ma.youcode.RentalHive.domain.entity.Location;
 import ma.youcode.RentalHive.domain.enums.Location.LocationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
