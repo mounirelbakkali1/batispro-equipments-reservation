@@ -1,6 +1,7 @@
 package ma.youcode.RentalHive.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ma.youcode.RentalHive.dto.AgencyDTO.AgencyCreateAndUpdateRequestDTO;
 import ma.youcode.RentalHive.dto.AgencyDTO.AgencyResponseDTO;
 import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentCreationRequestDTO;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("/v1/agency")
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 public class AgencyController {
     private final IAgencyService AgencyService;
 
@@ -43,7 +45,6 @@ public class AgencyController {
 
     @PostMapping
     public ResponseEntity<AgencyResponseDTO> createAgency(@Valid @RequestBody AgencyCreateAndUpdateRequestDTO requestDTO){
-//        if(requestDTO.user().getCin())
         AgencyResponseDTO createAgency = AgencyService.createAgency(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createAgency);
     }

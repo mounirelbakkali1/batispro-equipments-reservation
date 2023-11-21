@@ -3,16 +3,19 @@ package ma.youcode.RentalHive.service.Impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ma.youcode.RentalHive.domain.entity.Agency;
+import ma.youcode.RentalHive.domain.entity.Client;
 import ma.youcode.RentalHive.dto.AgencyDTO.AgencyCreateAndUpdateRequestDTO;
 import ma.youcode.RentalHive.dto.AgencyDTO.AgencyResponseDTO;
 import ma.youcode.RentalHive.dto.equipmentDTO.EquipmentResponseDTO;
 import ma.youcode.RentalHive.exception.EquipmentNotFoundException;
 import ma.youcode.RentalHive.repository.AgencyRepository;
+import ma.youcode.RentalHive.repository.ClientRespository;
 import ma.youcode.RentalHive.service.IAgencyService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class AgencyServiceImpl implements IAgencyService {
     public final AgencyRepository agencyRepository;
+    public final ClientRespository clientRepository;
 
     @Override
     public List<AgencyResponseDTO> getAllAgency() {
@@ -38,10 +42,21 @@ public class AgencyServiceImpl implements IAgencyService {
     }
 
     @Override
-    public AgencyResponseDTO createAgency(AgencyCreateAndUpdateRequestDTO agency) {
-        Agency agency1 = agencyRepository.save(AgencyCreateAndUpdateRequestDTO.agencyFromAgencyCreateDTO(agency));
+    public AgencyResponseDTO createAgency(AgencyCreateAndUpdateRequestDTO requestDTO) {
+        Agency saveAgency = null;
+        if (requestDTO.client().getCin() == null){
+            log.info("Sorry you must enter cin client");
+        }
+        Optional<Client> client = clientRepository.findByCin(requestDTO.client().getCin());
+        if (client.isPresent()){
+            Agency agency1 = Agency.builder()
+                    .local(requestDTO.local())
+                    .is_enabled(requestDTO.is_enabled())
+                    .client(client.get()).build();
+            saveAgency = agencyRepository.save(agency1);
+        }
         log.info("Agency created successfully");
-        return AgencyResponseDTO.fromAgency(agency1);
+        return AgencyResponseDTO.fromAgency(saveAgency);
     }
 
     @Override

@@ -11,7 +11,7 @@ public record AgencyResponseDTO(Long id, String local, Boolean is_enabled, Users
                 agency.getId(),
                 agency.getLocal(),
                 agency.getIs_enabled(),
-                agency.getUsers()
+                agency.getClient()
         );
     }
 }

@@ -2,19 +2,15 @@ package ma.youcode.RentalHive.dto.AgencyDTO;
 
 import lombok.Builder;
 import ma.youcode.RentalHive.domain.entity.Agency;
-import ma.youcode.RentalHive.domain.entity.Users;
+import ma.youcode.RentalHive.domain.entity.Client;
 
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Builder
-public record AgencyCreateAndUpdateRequestDTO(@NotNull String local, @NotNull Boolean is_enabled, @NotNull Users user) {
-    public static Agency agencyFromAgencyCreateDTO(AgencyCreateAndUpdateRequestDTO agency){
-        return new Agency(
-                null,
-                agency.local,
-                agency.is_enabled,
-                agency.user
-        );
+public record AgencyCreateAndUpdateRequestDTO(@NotNull String local, Boolean is_enabled, Client client) {
+    public static Agency agencyFromAgencyCreateDTO(){
+        return null;
     }
 
 
@@ -23,7 +19,7 @@ public record AgencyCreateAndUpdateRequestDTO(@NotNull String local, @NotNull Bo
                 id,
                 agency.local,
                 agency.is_enabled,
-                agency.user
+                agency.client
         );
     }
 }
