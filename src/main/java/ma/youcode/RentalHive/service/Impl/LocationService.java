@@ -175,6 +175,10 @@ public class LocationService implements ILocationService {
             locationToUpdate.setEquipmentUnit(equipmentUnitWanted);
             locationRepository.save(locationToUpdate);
         }
+        if(locationList.stream().allMatch(l->l.getStatus().equals(LocationStatus.ACCEPTED)))
+            dossierLocation.setStatus(LocationFolderStatus.ACCEPTED);
+        else if (locationList.stream().allMatch(l->l.getStatus().equals(LocationStatus.REFUSED)))
+            dossierLocation.setStatus(LocationFolderStatus.REFUSED);
         return LocationFolderDetailsDto.builder()
                 .folderNumber(locationFolderNumber)
                 .validatedBy("Admin")
@@ -226,7 +230,7 @@ public class LocationService implements ILocationService {
     public boolean checkIfLocationCouldBePlaced(@Valid LocationRequestDto location){
         List<Location> locations = locationRepository.
                 findByStartDateBetweenAndStatusAndEquipmentUnit_EquipmentModelOrEndDateBetweenAndStatusAndEquipmentUnit_EquipmentModel(location.startDate(), location.endDate(),LocationStatus.ACCEPTED,location.equipmentReference(), location.startDate(), location.endDate(),LocationStatus.ACCEPTED,location.equipmentReference());
-        System.out.println("locations : "+locations.size());
+        log.info("number of reservations placed and accepted : {}",locations.size());
         Integer reservedQuantityFromTheRequiredModel = locations.stream()
                 .map(l -> {
                     Set<LocalDate> reservedDatesForEquipment = getReservedDatesForEquipment(l);
