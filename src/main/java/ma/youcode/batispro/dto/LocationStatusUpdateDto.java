@@ -11,7 +11,6 @@ import java.util.UUID;
 public record LocationStatusUpdateDto(
         @NotBlank UUID locationRequestReference,
         @NotBlank String equipmentUnitReference,
-        @NotBlank LocationStatus status,
-        @NotBlank PaymentStatus paymentStatus
+        @NotBlank LocationStatus status
 ) {
 }

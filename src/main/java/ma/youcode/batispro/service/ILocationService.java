@@ -23,4 +23,6 @@ public interface ILocationService {
     public List<LocationRequestDto> findAllLocations(Pageable pageable);
 
     public List<LocationRequestDto> findAllLocationsByStatus(LocationStatus status);
+
+    LocationFolderDetailsDto findLocationFolderByNumber(String dossierNumber) throws DossierNotFoundException;
 }

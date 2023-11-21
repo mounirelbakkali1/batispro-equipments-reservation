@@ -16,7 +16,6 @@ public class LocationCreationRequestDtoMapper {
                 .endDate(location.getEndDate())
                 .quantity(location.getQuantity())
                 .equipmentReference(location.getEquipment().getModel())
-                .paymentStatus(location.getPaymentStatus()==null?null:location.getPaymentStatus().toString())
                 .build();
     }
 }
