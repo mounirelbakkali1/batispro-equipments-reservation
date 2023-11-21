@@ -21,6 +21,7 @@ public class Equipment {
     private EquipmentType equipmentType;
     private String model;
     private String description ;
+    private Double locationPrice;
     @Enumerated( EnumType.STRING)
     private EquipmentStatus equipmentStatus;
 

@@ -104,7 +104,6 @@ public class LocationService implements ILocationService {
         locationsRequest
                 .forEach(l -> {
                     l.setStatus(LocationStatus.PENDING);
-                    l.setPaymentStatus(PaymentStatus.PENDING);
                     l.setDossierLocation(savedDossier);
                     locationRepository.save(l);
                 });
@@ -173,7 +172,6 @@ public class LocationService implements ILocationService {
 
             Location locationToUpdate = location.get();
             locationToUpdate.setStatus(locationStatusUpdate.status());
-            locationToUpdate.setPaymentStatus(locationStatusUpdate.paymentStatus());
             EquipmentUnit equipmentUnitWanted = equipmentUnitRepository.findByRef(locationStatusUpdate.equipmentUnitReference())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid equipment unit reference"));
             // check if the equipment unit is available
@@ -232,6 +230,12 @@ public class LocationService implements ILocationService {
                                     .status(l.getStatus().toString())
                                     .build()
                         ).toList();
+    }
+
+    @Override
+    public DossierLocation findLocationFolderByNumber(String dossierNumber) throws DossierNotFoundException {
+        return locationFolderRepository.findByDossierNumber(dossierNumber)
+                .orElseThrow(() -> new DossierNotFoundException("Dossier not found"));
     }
 
 

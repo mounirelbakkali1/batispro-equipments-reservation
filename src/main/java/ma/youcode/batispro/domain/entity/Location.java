@@ -25,8 +25,6 @@ public class Location {
     private LocalDate endDate;
     @Enumerated(EnumType.STRING)
     private LocationStatus status;
-    @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
     @ManyToOne()
     @JoinTable(name = "equipmentunit_reservation",
             joinColumns = @JoinColumn(name = "reservation_id"),
