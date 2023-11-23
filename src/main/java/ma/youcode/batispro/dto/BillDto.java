@@ -6,6 +6,8 @@ import java.util.List;
 @Builder
 public record BillDto(
         String billNumber,
+        String object,
+        String description,
         String creationDate,
         String billStatus,
         String billPaymentStatus,

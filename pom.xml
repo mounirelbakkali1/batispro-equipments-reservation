@@ -9,11 +9,11 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ma.youcode</groupId>
-	<artifactId>RentalHive</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>RentalHive</name>
+	<artifactId>batipro-equipments-reservation</artifactId>
+	<version>0.0.1</version>
+	<name>batipro-equipments-reservation</name>
 	<packaging>war</packaging>
-	<description>Demo project for Spring Boot</description>
+	<description>application for equipments reservations</description>
 	<properties>
 		<java.version>17</java.version>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>

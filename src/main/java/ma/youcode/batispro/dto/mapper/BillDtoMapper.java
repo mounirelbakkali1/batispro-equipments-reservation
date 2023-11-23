@@ -15,6 +15,8 @@ public class BillDtoMapper {
     public BillDto mapToDto(Bill bill){
         return BillDto.builder()
                 .billNumber(bill.getBillNumber())
+                .object(bill.getObject())
+                .description(bill.getDescription())
                 .creationDate(bill.getDateCreation().toString())
                 .billStatus(bill.getStatus().toString())
                 .billTotal(bill.getTotal().toString())
