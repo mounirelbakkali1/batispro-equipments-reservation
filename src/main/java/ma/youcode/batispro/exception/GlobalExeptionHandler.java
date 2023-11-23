@@ -3,6 +3,7 @@ package ma.youcode.batispro.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -28,7 +29,7 @@ public class GlobalExeptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 }
 
-     @ExceptionHandler(IllegalArgumentException.class)
+     @ExceptionHandler({IllegalArgumentException.class, MissingServletRequestParameterException.class})
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(Exception ex, HttpServletRequest request){
             ErrorResponse errorResponse = new ErrorResponse(
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),

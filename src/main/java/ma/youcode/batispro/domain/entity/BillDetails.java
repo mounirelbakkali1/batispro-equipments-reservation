@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import java.util.UUID;
 
 @Entity
 @Setter @Getter
@@ -18,6 +19,7 @@ public class BillDetails {
     private Double totalPrice;
     private Double priceUnit;
     private Integer quantity;
+    private UUID locationReference;
 
 
     @OneToOne

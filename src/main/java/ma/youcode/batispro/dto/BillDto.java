@@ -13,6 +13,6 @@ public record BillDto(
         String clientName,
         String clientEmail,
         String billTotal,
-        BillDetailsDto billDetails
+        List<BillDetailsDto> billDetails
 ) {
 }
