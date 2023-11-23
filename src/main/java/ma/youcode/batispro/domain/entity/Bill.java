@@ -6,6 +6,7 @@ import ma.youcode.batispro.domain.enums.PaymentStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +18,8 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String billNumber;
+    private String object;
+    private String description;
     private LocalDateTime dateCreation;
     @Enumerated(EnumType.STRING)
     private BillStatus status;
@@ -25,8 +28,8 @@ public class Bill {
     private String comment ;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private BillDetails billDetails;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<BillDetails> billDetails;
 
 
 

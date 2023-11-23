@@ -10,6 +10,8 @@ import ma.youcode.batispro.domain.enums.BillStatus;
 import ma.youcode.batispro.domain.enums.Location.LocationStatus;
 import ma.youcode.batispro.domain.enums.PaymentStatus;
 import ma.youcode.batispro.dto.BillDto;
+import ma.youcode.batispro.dto.BillObject;
+import ma.youcode.batispro.dto.mapper.BillDetailsDtoMapper;
 import ma.youcode.batispro.dto.mapper.BillDtoMapper;
 import ma.youcode.batispro.exception.BillNotFoundException;
 import ma.youcode.batispro.exception.BillingCreationException;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -31,6 +34,7 @@ public class BillingService implements IBillingService {
 
     private final BillingRepository billingRepository;
     private final BillDtoMapper billDtoMapper;
+    private final BillDetailsDtoMapper billDetailsDtoMapper;
     private final LocationService locationService;
     @Override
     public List<BillDto> getAllBills(Pageable pageable) {
@@ -54,19 +58,31 @@ public class BillingService implements IBillingService {
     }
 
     @Override
-    public BillDto createBill(String dossierNumber) throws DossierNotFoundException {
+    public BillDto createBill(String dossierNumber, BillObject billObject) throws DossierNotFoundException {
         DossierLocation folder = locationService.findLocationFolderByNumber(dossierNumber);
         List<Location> list = folder.getLocation().parallelStream().filter(location -> location.getStatus().equals(LocationStatus.ACCEPTED))
                 .toList();
         if(list.isEmpty()) throw new BillingCreationException("Cannot generate a bill for a dossier that has no accepted reservations");
         Bill bill = Bill.builder()
-                .dateConfirmation(LocalDateTime.now())
+                .dateCreation(LocalDateTime.now())
                 .billNumber("BILL-" + LocalDateTime.now().getNano())
                 .client(folder.getClient())
                 .dossierLocation(folder)
                 .status(BillStatus.CREATED)
                 .paymentStatus(PaymentStatus.PENDING)
+                .object(billObject.object())
+                .description(billObject.description())
                 .build();
+        List<BillDetails> billDetails =list.parallelStream()
+                .map(location -> BillDetails.builder()
+                        .bill(bill)
+                        .locationReference(location.getReference())
+                        .quantity(location.getQuantity())
+                        .priceUnit(location.getEquipment().getLocationPrice())
+                        .totalPrice(location.getQuantity() * location.getEquipment().getLocationPrice())
+                        .build())
+                .toList();
+        bill.setBillDetails(billDetails);
         Bill billSaved = billingRepository.save(bill);
         return billDtoMapper.mapToDto(billSaved);
     }

@@ -22,11 +22,9 @@ public class BillDtoMapper {
                 .clientEmail(bill.getClient().getEmail())
                 .clientName(bill.getClient().getName())
                 .dossierNumber(bill.getDossierLocation().getDossierNumber())
-                .billDetails(billDetailsDtoMapper.mapToDto(bill))
+                .billDetails(bill.getBillDetails().stream()
+                        .map(billDetailsDtoMapper::mapToBillDetailsDto)
+                        .toList())
                 .build();
-
-
-
-                
     }
 }

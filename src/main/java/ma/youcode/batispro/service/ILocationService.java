@@ -1,5 +1,6 @@
 package ma.youcode.batispro.service;
 
+import ma.youcode.batispro.domain.entity.DossierLocation;
 import ma.youcode.batispro.domain.enums.Location.LocationStatus;
 import ma.youcode.batispro.dto.LocationStatusUpdateDto;
 import ma.youcode.batispro.dto.locationDTO.LocationCreationRequestDto;
@@ -24,5 +25,5 @@ public interface ILocationService {
 
     public List<LocationRequestDto> findAllLocationsByStatus(LocationStatus status);
 
-    LocationFolderDetailsDto findLocationFolderByNumber(String dossierNumber) throws DossierNotFoundException;
+    DossierLocation findLocationFolderByNumber(String dossierNumber) throws DossierNotFoundException;
 }
