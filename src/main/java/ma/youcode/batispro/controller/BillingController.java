@@ -1,18 +1,27 @@
 package ma.youcode.batispro.controller;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ma.youcode.batispro.dto.BillDto;
 import ma.youcode.batispro.dto.BillObject;
+import ma.youcode.batispro.exception.BillNotFoundException;
 import ma.youcode.batispro.exception.DossierNotFoundException;
 import ma.youcode.batispro.service.IBillingService;
+import ma.youcode.batispro.service.IContractGenerator;
+import ma.youcode.batispro.service.IContractService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.query.Procedure;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/billing")
@@ -20,6 +29,7 @@ import java.util.List;
 public class BillingController {
 
     private final IBillingService billingService;
+    private final IContractService contractService;
 
 
     @PostMapping("/create")
@@ -37,6 +47,19 @@ public class BillingController {
         Pageable pageable = Pageable.ofSize(size).withPage(page);
         List<BillDto> allBills = billingService.getAllBills(pageable);
         return ResponseEntity.ok(allBills);
+    }
+
+    @GetMapping(value = "/{billNumber}/contract",produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<?> createContract(@PathVariable String billNumber) throws Exception {
+        byte[] contract = contractService.createContract(billNumber);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=contract"+billNumber+".pdf");
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentLength(contract.length)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(contract);
     }
 
 }
