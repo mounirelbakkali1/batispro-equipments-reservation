@@ -51,10 +51,9 @@ public class BillingService implements IBillingService {
     }
 
     @Override
-    public BillDto getBillByNumber(String billNumber) {
+    public Bill getBillByNumber(String billNumber) {
         return billingRepository.findByBillNumber(billNumber)
-                .map(billDtoMapper::mapToDto)
-                .orElseThrow();
+                .orElseThrow(() -> new BillNotFoundException("Cannot find bill with number: " + billNumber));
     }
 
     @Override
@@ -77,6 +76,9 @@ public class BillingService implements IBillingService {
                 .map(location -> BillDetails.builder()
                         .bill(bill)
                         .locationReference(location.getReference())
+                        .equipmentReference(location.getEquipment().getModel())
+                        .startDate(location.getStartDate())
+                        .endDate(location.getEndDate())
                         .quantity(location.getQuantity())
                         .priceUnit(location.getEquipment().getLocationPrice())
                         .totalPrice(location.getQuantity() * location.getEquipment().getLocationPrice())
