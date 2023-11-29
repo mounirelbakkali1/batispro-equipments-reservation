@@ -6,6 +6,9 @@ import lombok.Builder;
 public record BillDetailsDto(
         String equipmentPrice,
         String equipmentQuantity,
-        String totalPrice
+        String totalPrice,
+        String equipmentReference,
+        String startDate,
+        String endDate
 ) {
 }

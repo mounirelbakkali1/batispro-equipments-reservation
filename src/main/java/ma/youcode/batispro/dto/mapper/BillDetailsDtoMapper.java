@@ -2,7 +2,6 @@ package ma.youcode.batispro.dto.mapper;
 
 
 import ma.youcode.batispro.domain.entity.BillDetails;
-import ma.youcode.batispro.domain.entity.Location;
 import ma.youcode.batispro.dto.BillDetailsDto;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +13,9 @@ public class BillDetailsDtoMapper {
                 .equipmentPrice(billDetails.getPriceUnit().toString())
                 .equipmentQuantity(billDetails.getQuantity().toString())
                 .totalPrice(billDetails.getTotalPrice().toString())
+                .equipmentReference(billDetails.getEquipmentReference())
+                .startDate(billDetails.getStartDate().toString())
+                .endDate(billDetails.getEndDate().toString())
                 .build();
 
 
