@@ -29,7 +29,7 @@ public class GlobalExeptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 }
 
-     @ExceptionHandler({IllegalArgumentException.class, MissingServletRequestParameterException.class})
+     @ExceptionHandler({IllegalArgumentException.class, MissingServletRequestParameterException.class, ContractCreationException.class})
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(Exception ex, HttpServletRequest request){
             ErrorResponse errorResponse = new ErrorResponse(
                     LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
